@@ -10,7 +10,7 @@ namespace API.Models
         public string Sender { get; set; }
         public string Recipient { get; set; }
         public string Text { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; } = DateTime.UtcNow;
 
     }
 }
