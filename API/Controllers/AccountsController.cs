@@ -13,12 +13,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private DataContext _context;
         private ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountsController(DataContext context, ITokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;
@@ -30,20 +30,15 @@ namespace API.Controllers
             if (await UserExists(registerDto.Username))
                 return BadRequest("Username already taken");
 
-            using var hmac = new HMACSHA512();
-
-            var user = new User
-            {
-                UserName = registerDto.Username,
-                PaswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
+            var user = new User { UserName = registerDto.Username };
+            EncodeNewPassword(user, registerDto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user)});
+            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) });
         }
+
 
         [HttpPost("login")]
         public async Task<ActionResult<User>> Login(LoginDto loginDto)
@@ -63,14 +58,21 @@ namespace API.Controllers
                     return Unauthorized("Invalid password");
             }
 
-            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user)});
-
+            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) });
         }
 
 
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username);
+        }
+
+        private void EncodeNewPassword(User user, string password)
+        {
+            using var hmac = new HMACSHA512();
+
+            user.PaswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            user.PasswordSalt = hmac.Key;
         }
     }
 }

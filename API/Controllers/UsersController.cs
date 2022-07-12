@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.DTOs;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,18 +23,22 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return Ok(await _context.Users.ToListAsync());
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             return Ok(await _context.Users.FindAsync(id));
         }
 
+/*        [HttpPut("{id}")]
+        public async Task<ActionResult<User>> UpdatePasswordById(int id, string password)
+        {
+            var user = _context.Users.Find(id);
+
+        }*/
     }
 }

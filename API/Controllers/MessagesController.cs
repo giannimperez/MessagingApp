@@ -20,7 +20,7 @@ namespace API.Controllers
             _context = context;
         }
 
-
+        // Why use IEnumerable in some of these cases ????
         [HttpPost]
         public async Task<ActionResult<IEnumerable<Message>>> PostMessage(MessageDto messageDto)
         {
@@ -51,10 +51,9 @@ namespace API.Controllers
             return Ok(await message);
         }
 
-        [HttpGet("{sender}/{recipient}")]
+        [HttpGet("sender/{sender}/recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient)
         {
-
             var messages = _context.Messages
                 .Where(x => x.Sender == sender)
                 .Where(y => y.Recipient == recipient).ToListAsync();
