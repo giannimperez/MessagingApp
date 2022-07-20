@@ -20,9 +20,8 @@ namespace API.Controllers
             _context = context;
         }
 
-        // Why use IEnumerable in some of these cases ????
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Message>>> PostMessage(MessageDto messageDto)
+        public async Task<ActionResult<Message>> PostMessage(MessageDto messageDto)
         {
             Message message = new Message
             {
@@ -34,31 +33,31 @@ namespace API.Controllers
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
 
-            return Ok(message);
+            return message;
         }
 
         [HttpGet("sender/{sender}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySender(string sender)
         {
-            var messages = _context.Messages.Where(x => x.Sender == sender).ToListAsync();
-            return Ok(await messages);
+            var messages = await _context.Messages.Where(x => x.Sender == sender).ToListAsync();
+            return messages;
         }
 
         [HttpGet("recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesByRecipient(string recipient)
         {
-            var message = _context.Messages.Where(x => x.Recipient == recipient).ToListAsync();
-            return Ok(await message);
+            var messages = await _context.Messages.Where(x => x.Recipient == recipient).ToListAsync();
+            return messages;
         }
 
         [HttpGet("sender/{sender}/recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient)
         {
-            var messages = _context.Messages
+            var messages = await _context.Messages
                 .Where(x => x.Sender == sender)
                 .Where(y => y.Recipient == recipient).ToListAsync();
 
-            return Ok(await messages);
+            return messages;
         }
     }
 }

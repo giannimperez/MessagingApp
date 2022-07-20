@@ -3,6 +3,7 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,36 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220715131140_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
-
-            modelBuilder.Entity("API.Models.Friendship", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AddresseeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("RequesterId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddresseeId");
-
-                    b.HasIndex("RequesterId");
-
-                    b.ToTable("Friendships");
-                });
 
             modelBuilder.Entity("API.Models.Message", b =>
                 {
@@ -47,7 +25,7 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Recipient")
@@ -92,25 +70,6 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("API.Models.Friendship", b =>
-                {
-                    b.HasOne("API.Models.User", "Addressee")
-                        .WithMany()
-                        .HasForeignKey("AddresseeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.User", "Requester")
-                        .WithMany()
-                        .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Addressee");
-
-                    b.Navigation("Requester");
                 });
 #pragma warning restore 612, 618
         }

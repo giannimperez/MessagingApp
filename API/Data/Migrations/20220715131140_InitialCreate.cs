@@ -32,10 +32,11 @@ namespace API.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
                     PaswordHash = table.Column<byte[]>(type: "BLOB", nullable: true),
-                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -11,13 +11,37 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220710195303_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220715211710_FriendshipEntity")]
+    partial class FriendshipEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
+
+            modelBuilder.Entity("API.Models.Friendship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AddresseeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RequesterId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddresseeId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("Friendships");
+                });
 
             modelBuilder.Entity("API.Models.Message", b =>
                 {
@@ -25,7 +49,7 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("CreateDate")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Recipient")
@@ -48,10 +72,13 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool?>("IsActive")
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("PasswordSalt")
@@ -67,6 +94,25 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("API.Models.Friendship", b =>
+                {
+                    b.HasOne("API.Models.User", "Addressee")
+                        .WithMany()
+                        .HasForeignKey("AddresseeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Addressee");
+
+                    b.Navigation("Requester");
                 });
 #pragma warning restore 612, 618
         }

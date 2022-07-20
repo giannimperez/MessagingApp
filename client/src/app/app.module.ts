@@ -14,6 +14,10 @@ import { MessagesComponent } from './messages/messages.component';
 import { FriendsComponent } from './friends/friends.component';
 import { ListsComponent } from './lists/lists.component';
 import { ToastrModule } from 'ngx-toastr';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FriendsMenuComponent } from './friends-menu/friends-menu.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MembersComponent } from './members/members/members.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,10 @@ import { ToastrModule } from 'ngx-toastr';
     RegisterComponent,
     MessagesComponent,
     FriendsComponent,
-    ListsComponent
+    ListsComponent,
+    FriendsMenuComponent,
+    MemberListComponent,
+    MembersComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { User } from '../models/user';
 
 @Injectable({
@@ -33,11 +34,16 @@ export class AccountService {
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSource.next(user);
         }
-    }))
+      }))
   }
 
   setCurrentUser(user: User) {
     this.currentUserSource.next(user);
+  }
+
+  getCurrentUser() {
+    var userJson = JSON.parse(localStorage.getItem('user'));
+    return userJson;
   }
 
   logout() {

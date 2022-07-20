@@ -5,6 +5,7 @@ using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,23 +26,30 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username))
                 return BadRequest("Username already taken");
 
-            var user = new User { UserName = registerDto.Username };
+            var user = new User {
+                UserName = registerDto.Username,
+                DateOfBirth = registerDto.DateOfBirth
+            };
             EncodeNewPassword(user, registerDto.Password);
+
+            if (user.GetAge() < 13)
+                return BadRequest("Must be 13 years or older");
+
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) });
+            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
         }
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             // Validate username
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
@@ -58,7 +66,7 @@ namespace API.Controllers
                     return Unauthorized("Invalid password");
             }
 
-            return Ok(new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) });
+            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
         }
 
 

@@ -21,8 +21,25 @@ export class RegisterComponent implements OnInit {
       console.log(response);
       this.cancel();
     }, error => {
-      console.log(error);
-      this.toastr.error(error.error);
+
+      if (error.error.errors) {
+        console.log(1);
+        const modalStateErrors = [];
+        console.log(2);
+        for (const key in error.error.errors) {
+          console.log(3);
+          if (error.error.errors[key]) {
+            console.log(4);
+            modalStateErrors.push(error.error.errors[key])
+            console.log(5);
+          }
+          this.toastr.error(error.error.errors[key]);
+        }
+        throw modalStateErrors;
+      } else {
+        console.log(error);
+        this.toastr.error(error.error);
+      }
     })
   }
 

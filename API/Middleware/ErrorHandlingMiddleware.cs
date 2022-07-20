@@ -12,30 +12,30 @@ namespace API.Middleware
     public class ErrorHandlingMiddleware
     {
 
-        private RequestDelegate Next { get; }
-        private ILogger<ErrorHandlingMiddleware> Logger { get; }
-        private IHostEnvironment Env { get; }
+        private RequestDelegate _next { get; }
+        private ILogger<ErrorHandlingMiddleware> _logger { get; }
+        private IHostEnvironment _env { get; }
 
         public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger, IHostEnvironment env)
         {
-            Next = next;
-            Logger = logger;
-            Env = env;
+            _next = next;
+            _logger = logger;
+            _env = env;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await Next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
-                var response = Env.IsDevelopment()
+                var response = _env.IsDevelopment()
                     ? new CustomException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
                     : new CustomException(context.Response.StatusCode, "Internal Server Error");
 
