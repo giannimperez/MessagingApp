@@ -1,7 +1,9 @@
 ﻿using API.Data;
 using API.DTOs;
+using API.ErrorHandling;
 using API.Interfaces;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,71 +18,51 @@ namespace API.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private DataContext _context;
-        private ITokenService _tokenService;
+        private IAccountsService _accountsService;
 
-        public AccountsController(DataContext context, ITokenService tokenService)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="accountsService"></param>
+        public AccountsController(IAccountsService accountsService)
         {
-            _context = context;
-            _tokenService = tokenService;
+            _accountsService = accountsService;
         }
 
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="registerDto">Includes desired username and password.</param>
+        /// <returns>UserDto which includes username and token.</returns>
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.Username))
-                return BadRequest("Username already taken");
-
-            var user = new User {
-                UserName = registerDto.Username,
-                DateOfBirth = registerDto.DateOfBirth
-            };
-            EncodeNewPassword(user, registerDto.Password);
-
-            if (user.GetAge() < 13)
-                return BadRequest("Must be 13 years or older");
-
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
+            try
+            {
+                return await _accountsService.CreateUser(registerDto);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
-
+        /// <summary>
+        /// Retrieves UserDto.
+        /// </summary>
+        /// <param name="loginDto">Includes username and password of existing account.</param>
+        /// <returns>UserDto which includes username and token.</returns>
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            // Validate username
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
-            if (user == null)
-                return Unauthorized("Invalid username");
-
-            // Validate password
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
+            try
             {
-                if (computedHash[i] != user.PaswordHash[i])
-                    return Unauthorized("Invalid password");
+                return await _accountsService.Login(loginDto);
             }
-
-            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
-        }
-
-
-        private async Task<bool> UserExists(string username)
-        {
-            return await _context.Users.AnyAsync(x => x.UserName == username);
-        }
-
-        private void EncodeNewPassword(User user, string password)
-        {
-            using var hmac = new HMACSHA512();
-
-            user.PaswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            user.PasswordSalt = hmac.Key;
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
     }
 }

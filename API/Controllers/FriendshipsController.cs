@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
 
-        // TODO: Implement get friendhipbyid w/ return type FriendshipDTO. Might need to rethink DB entity and DTO.
+        // TODO: Implement get friendshipbyid w/ return type FriendshipDTO. Might need to rethink DB entity and DTO.
         [HttpGet("{id}")]
         public async Task<ActionResult<int>> GetFriendshipById(int id)
         {

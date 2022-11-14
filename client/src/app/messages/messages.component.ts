@@ -3,6 +3,7 @@ import { FriendsComponent } from '../friends/friends.component';
 import { Message } from '../models/message';
 import { AccountService } from '../services/account.service';
 import { MessageService } from '../services/message.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-messages',
@@ -13,7 +14,12 @@ import { MessageService } from '../services/message.service';
 export class MessagesComponent implements OnInit {
   messages: Message[];
 
-  constructor(private messageService: MessageService) { }
+
+  constructor(private messageService: MessageService) {
+
+
+
+  }
 
   ngOnInit(): void {
     this.loadMessages();

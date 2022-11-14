@@ -18,17 +18,30 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context"></param>
         public UsersController(DataContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves all users.
+        /// </summary>
+        /// <returns>List of all users.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves a user by Id.
+        /// </summary>
+        /// <param name="id">Id of the user to retrieve.</param>
+        /// <returns>User object.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
@@ -40,6 +53,11 @@ namespace API.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Retrieves a user by username.
+        /// </summary>
+        /// <param name="username">Username to search for.</param>
+        /// <returns>User object.</returns>
         [HttpGet("username/{username}")]
         public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
         {
@@ -58,6 +76,11 @@ namespace API.Controllers
             return memberDto;
         }
 
+        /// <summary>
+        /// Retrieves all users whose usernames match a partial username.
+        /// </summary>
+        /// <param name="username">Partial username to search for.</param>
+        /// <returns>List of users containing the partial username.</returns>
         [HttpGet("partialusername/{username}")]
         public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string username)
         {
@@ -75,12 +98,15 @@ namespace API.Controllers
                 };
                 returnUsers.Add(memberDto);
             }
-            
 
             return returnUsers;
         }
 
-
+        /// <summary>
+        /// Retrieves a users age by Id.
+        /// </summary>
+        /// <param name="id">Id of the user.</param>
+        /// <returns>Age of the user.</returns>
         [HttpGet("age/{id}")]
         public async Task<ActionResult<int>> GetUserAgeById(int id)
         {
@@ -88,14 +114,23 @@ namespace API.Controllers
             return user.GetAge();
         }
 
+        /// <summary>
+        /// Deletes a user by Id.
+        /// </summary>
+        /// <param name="id">Id of user to delete.</param>
+        /// <returns>Message reporting deletion success.</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+                return BadRequest("User not found");
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return $"User with Id: {user.Id} deleted.";
+            return $"User {user.Id} deleted.";
         }
     }
 }

@@ -1,20 +1,28 @@
-﻿namespace API.ErrorHandling
+﻿using System;
+
+namespace API.ErrorHandling
 {
-    public class CustomException
+    public class CustomException : Exception
     {
 
         public int StatusCode { get; set; }
         public string Message { get; set; }
-        public string Details { get; set; }
+
+        public CustomException(int statusCode, string message) 
+            : base(message)
+        {
+            StatusCode = statusCode;
+            Message = base.Message;
+        }
+
 
 
         public CustomException(int statusCode, string message = null, string details = null)
         {
             StatusCode = statusCode;
             Message = message;
-            Details = details;
+            //Details = details;
         }
-
 
     }
 }

@@ -15,11 +15,21 @@ namespace API.Controllers
     public class MessagesController : ControllerBase
     {
         private DataContext _context;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context"></param>
         public MessagesController(DataContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Creates a message.
+        /// </summary>
+        /// <param name="messageDto">Includes Sender, Recipient, and Text.</param>
+        /// <returns>The created message.</returns>
         [HttpPost]
         public async Task<ActionResult<Message>> PostMessage(MessageDto messageDto)
         {
@@ -36,6 +46,11 @@ namespace API.Controllers
             return message;
         }
 
+        /// <summary>
+        /// Retrieves list of messages by sender.
+        /// </summary>
+        /// <param name="sender">Sender to retrieve messages for.</param>
+        /// <returns>List of messages with this sender.</returns>
         [HttpGet("sender/{sender}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySender(string sender)
         {
@@ -43,6 +58,11 @@ namespace API.Controllers
             return messages;
         }
 
+        /// <summary>
+        /// Retrieves list of messages by recipient.
+        /// </summary>
+        /// <param name="recipient">Recipient to retrieve messages for.</param>
+        /// <returns>List of messages with this recipient.</returns>
         [HttpGet("recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesByRecipient(string recipient)
         {
@@ -50,6 +70,12 @@ namespace API.Controllers
             return messages;
         }
 
+        /// <summary>
+        /// Retrieves list of messages between a sender and recipient.
+        /// </summary>
+        /// <param name="sender">Sender to filter by.</param>
+        /// <param name="recipient">Recipient to filter by.</param>
+        /// <returns>List of messages with both this sender and recipient.</returns>
         [HttpGet("sender/{sender}/recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient)
         {

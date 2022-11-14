@@ -9,7 +9,7 @@ import { AccountService } from './account.service';
   providedIn: 'root'
 })
 export class MessageService {
-  baseUrl = environment.apiUrl;
+  baseUrl = 'https://localhost:5001/api/';
 
   constructor(private http: HttpClient, private accountService: AccountService) { }
 
@@ -18,16 +18,26 @@ export class MessageService {
 
     const response = fetch(this.baseUrl + 'messages/recipient/' + currentUser);
 
-/*    console.log(response);*/
+    console.log(response);
 
 /*    const response = this.http.get(this.baseUrl + 'messages/recipient/' + currentUser).pipe(
         map((messages: Message[]) => {
 
             console.log(messages);
 
-        }))*/
+        }))
+    
+    console.log(response);*/
 
     return response;
     
   }
+
+
+/*  getMembersByPartialUsername(username: string) {
+    if (username == "") {
+      return;
+    }
+    return this.http.get<Member[]>(this.baseUrl + 'users/partialusername/' + username, httpOptions);
+  }*/
 }

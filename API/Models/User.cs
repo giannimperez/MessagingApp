@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace API.Models
 {
@@ -18,7 +19,9 @@ namespace API.Models
         public string UserName { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime DateOfBirth { get; set; } = DateTime.Today;
+        [JsonIgnore]
         public byte[] PaswordHash { get; set; }
+        [JsonIgnore]
         public byte[] PasswordSalt { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
 
