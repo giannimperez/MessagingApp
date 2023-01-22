@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.DTOs;
+using API.ErrorHandling;
 using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,15 +17,15 @@ namespace API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _context;
+        private IUsersService _usersService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="context"></param>
-        public UsersController(DataContext context)
+        public UsersController(IUsersService usersService)
         {
-            _context = context;
+            _usersService = usersService;
         }
 
         /// <summary>
@@ -34,7 +35,14 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            try
+            {
+                return await _usersService.GetUsers();
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -45,12 +53,14 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-                return BadRequest("User not found");
-
-            return user;
+            try
+            {
+                return await _usersService.GetUserById(id);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -61,19 +71,14 @@ namespace API.Controllers
         [HttpGet("username/{username}")]
         public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
         {
-            var user = await _context.Users.Where(u => u.UserName == username).SingleOrDefaultAsync();
-
-            if (user == null)
-                return BadRequest("User not found");
-
-            MemberDto memberDto = new MemberDto
+            try
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                IsActive = user.IsActive
-            };
-
-            return memberDto;
+                return await _usersService.GetUserByUsername(username);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -84,22 +89,14 @@ namespace API.Controllers
         [HttpGet("partialusername/{username}")]
         public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string username)
         {
-            var users = await _context.Users.Where(u => u.UserName.ToLower().Contains(username.ToLower())).ToListAsync();
-
-            List<MemberDto> returnUsers = new List<MemberDto>();
-
-            foreach(var user in users)
+            try
             {
-                MemberDto memberDto = new MemberDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    IsActive = user.IsActive
-                };
-                returnUsers.Add(memberDto);
+                return await _usersService.GetUserListByUsername(username);
             }
-
-            return returnUsers;
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -110,8 +107,14 @@ namespace API.Controllers
         [HttpGet("age/{id}")]
         public async Task<ActionResult<int>> GetUserAgeById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            return user.GetAge();
+            try
+            {
+                return await _usersService.GetUserAgeById(id);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -122,15 +125,14 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> DeleteUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-                return BadRequest("User not found");
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return $"User {user.Id} deleted.";
+            try
+            {
+                return await _usersService.DeleteUserById(id);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using API.Interfaces;
+using API.ErrorHandling;
 
 namespace API.Controllers
 {
@@ -14,15 +16,15 @@ namespace API.Controllers
     [ApiController]
     public class MessagesController : ControllerBase
     {
-        private DataContext _context;
+        private IMessagesService _messagesService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="context"></param>
-        public MessagesController(DataContext context)
+        public MessagesController(IMessagesService messagesService)
         {
-            _context = context;
+            _messagesService = messagesService;
         }
 
         /// <summary>
@@ -33,17 +35,14 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Message>> PostMessage(MessageDto messageDto)
         {
-            Message message = new Message
+            try
             {
-                Sender = messageDto.Sender,
-                Recipient = messageDto.Recipient,
-                Text = messageDto.Text
-            };
-
-            await _context.Messages.AddAsync(message);
-            await _context.SaveChangesAsync();
-
-            return message;
+                return await _messagesService.PostMessage(messageDto);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -54,8 +53,14 @@ namespace API.Controllers
         [HttpGet("sender/{sender}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySender(string sender)
         {
-            var messages = await _context.Messages.Where(x => x.Sender == sender).ToListAsync();
-            return messages;
+            try
+            {
+                return await _messagesService.GetMessagesBySender(sender);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -66,8 +71,14 @@ namespace API.Controllers
         [HttpGet("recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesByRecipient(string recipient)
         {
-            var messages = await _context.Messages.Where(x => x.Recipient == recipient).ToListAsync();
-            return messages;
+            try
+            {
+                return await _messagesService.GetMessagesByRecipient(recipient);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
 
         /// <summary>
@@ -79,11 +90,27 @@ namespace API.Controllers
         [HttpGet("sender/{sender}/recipient/{recipient}")]
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient)
         {
-            var messages = await _context.Messages
-                .Where(x => x.Sender == sender)
-                .Where(y => y.Recipient == recipient).ToListAsync();
+            try
+            {
+                return await _messagesService.GetMessagesBetweenUsers(sender, recipient);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
+        }
 
-            return messages;
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> DeleteMessage(int id)
+        {
+            try
+            {
+                return await _messagesService.DeleteMessage(id);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
         }
     }
 }
