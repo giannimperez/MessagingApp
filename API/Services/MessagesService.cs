@@ -62,6 +62,33 @@ namespace API.Services
         }
 
         /// <inheritdoc></inheritdoc>
+        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser)
+        {
+            var messages = await _context.Messages
+                .Where(x => x.Sender == requestingUser || x.Sender == otherUser)
+                .Where(y => y.Recipient == otherUser || y.Recipient == requestingUser).ToListAsync();
+
+
+            // SET ReadByRecipient: true on each message in the messages list.
+            foreach(Message message in messages)
+            {
+                if(message.Recipient == requestingUser)
+                {
+                    // message.ReadByRecipient = true;
+                }
+            }
+
+
+            /*messages.AddRange(await _context.Messages
+                .Where(x => x.Sender == user2)
+                .Where(y => y.Recipient == user1).ToListAsync());*/
+
+            messages.Sort((x, y) => x.CreateDate.CompareTo(y.CreateDate));
+
+            return messages;
+        }
+
+        /// <inheritdoc></inheritdoc>
         public async Task<ActionResult<bool>> DeleteMessage(int id)
         {
             var message = await _context.Messages.FindAsync(id);
@@ -74,6 +101,8 @@ namespace API.Services
 
             return true;
         }
+
+        
 
     }
 }

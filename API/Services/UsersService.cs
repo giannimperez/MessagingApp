@@ -58,7 +58,16 @@ namespace API.Services
         /// <inheritdoc></inheritdoc>
         public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string username)
         {
-            var users = await _context.Users.Where(u => u.UserName.ToLower().Contains(username.ToLower())).ToListAsync();
+            List<User> users = new List<User>();
+
+            if (username == "") // TODO: Fix this for partial route
+            {
+                users = await _context.Users.ToListAsync();
+            }
+            else
+            {
+                users = await _context.Users.Where(u => u.UserName.ToLower().Contains(username.ToLower())).ToListAsync();
+            }
 
             List<MemberDto> returnUsers = new List<MemberDto>();
 
@@ -71,6 +80,44 @@ namespace API.Services
                     IsActive = user.IsActive
                 };
                 returnUsers.Add(memberDto);
+            }
+
+            return returnUsers;
+        }
+
+        /// <inheritdoc></inheritdoc>
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
+        {
+            // TODO: fix async issue here
+            /*var users = _context.Messages
+                .Where(m => m.Recipient == username || m.Sender == username)
+                .Join(_context.Users, m => m.Recipient, u => u.UserName, (m, u) => u)
+                .Distinct().ToList();*/
+
+            var users = _context.Messages
+                .Where(m => (m.Sender == username || m.Recipient == username))
+                .Select(m => m.Sender == username ? m.Recipient : m.Sender)
+                .Distinct()
+                .Join(_context.Users, un => un, u => u.UserName, (un, u) => u)
+                .ToList();
+
+
+
+            List<MemberDto> returnUsers = new List<MemberDto>();
+
+            foreach (var user in users)
+            {
+                // Doesn't include user provided in argument
+                if (user.UserName != username) 
+                {
+                    MemberDto memberDto = new MemberDto
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        IsActive = user.IsActive
+                    };
+                    returnUsers.Add(memberDto);
+                }
             }
 
             return returnUsers;

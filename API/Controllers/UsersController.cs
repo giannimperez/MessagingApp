@@ -99,6 +99,20 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{username}/conversationlist")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
+        {
+            try
+            {
+                return await _usersService.GetUsersWithConversations(username);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
+        }
+
+
         /// <summary>
         /// Retrieves a users age by Id.
         /// </summary>

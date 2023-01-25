@@ -100,6 +100,19 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{requestinguser}/{otheruser}/conversation")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser)
+        {
+            try
+            {
+                return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteMessage(int id)
         {

@@ -23,6 +23,28 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "client", "client\", "{14697
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "60333"
+		SlnRelativePath = "client\"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "react-client", "react-client\", "{EC0F1244-8051-485F-AB98-943D61E7CC95}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_59080"
+		Debug.AspNetCompiler.PhysicalPath = "react-client\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59080\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_59080"
+		Release.AspNetCompiler.PhysicalPath = "react-client\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59080\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "59080"
+		SlnRelativePath = "react-client\"
 	EndProjectSection
 EndProject
 Global
@@ -39,6 +61,10 @@ Global
 		{14697342-704D-409D-BCFB-8A06A2E0C76F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14697342-704D-409D-BCFB-8A06A2E0C76F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{14697342-704D-409D-BCFB-8A06A2E0C76F}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{EC0F1244-8051-485F-AB98-943D61E7CC95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0F1244-8051-485F-AB98-943D61E7CC95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0F1244-8051-485F-AB98-943D61E7CC95}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0F1244-8051-485F-AB98-943D61E7CC95}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
