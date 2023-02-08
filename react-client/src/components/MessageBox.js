@@ -2,8 +2,6 @@
 
 function MessageBox() {
 
-    console.log("MESSAGEBOX RENDER");
-
     const [text, setText] = useState('');
 
     // users in conversation
@@ -21,7 +19,7 @@ function MessageBox() {
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log("MESSAGE POST___________________________");
+
             })
             .catch((error) => {
                 console.error(error);
@@ -35,25 +33,24 @@ function MessageBox() {
     }, []);
 
 
-    return ( <
-        div className = "message-box" >
-        <
-        form onSubmit = { handleSubmit } >
-        <
-        input ref = { inputRef }
-        className = "message-box-entry"
-        type = "text"
-        value = { text }
-        onChange = {
-            (event) => setText(event.target.value)
-        }
-        /> <
-        input className = "message-box-button"
-        type = "submit"
-        value = "Send" / >
-        <
-        /form> < /
-        div >
+    return (
+        <div className = "message-box" >
+            <form onSubmit = { handleSubmit } >
+                <input
+                    ref={inputRef}
+                    className = "message-box-entry"
+                    type = "text"
+                    value={text}
+                    placeholder="Write a message"
+                    onChange = {(event) => setText(event.target.value)}
+                />
+                <input
+                    className="message-box-button"
+                    type = "submit"
+                    value="Send"
+                />
+            </form> 
+        </div >
     );
 }
 

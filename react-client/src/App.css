@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+
 }
 
 body {
@@ -7,8 +8,39 @@ body {
     overflow: hidden;
 }
 
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(50,50,65) rgb(28,28,37);
+}
+
+/* For Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgb(28,28,37);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgb(50,50,65);
+    border-radius: 20px;
+    border: 3px solid rgb(50,50,65);
+}
+
+/* WebKit/Blink Browsers */
+::selection {
+    background: rgb(83,87,217);
+}
+
+/* Gecko Browsers */
+::-moz-selection {
+    background: rgb(93,97,237);
+}
+
 .nav {
-    background-color: darkslateblue;
+    background-color: rgb(43,43,54);
     color: white;
     display: flex;
     justify-content: space-between;
@@ -57,6 +89,7 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    height: 100%;
 }
 
 .small-column {
@@ -71,72 +104,178 @@ body {
     flex-direction: column;
     flex-basis: 100%;
     flex: 3;
+
 }
 
 .sidebar-column {
-    background-color: rgb(52,41,120);
+    background-color: rgb(50,50,65);
     color: white;
     height: 100vh;
     padding: 5%;
 }
 
 .conversation-column {
-    background-color: whitesmoke;
+    background-color: rgb(28,28,37);
+    color: white;
     height: 85vh;
     max-height: 85vh;
     min-height: 85vh;
     padding: 5%;
-    overflow: scroll;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;
+    justify-content: space-between;
+}
+
+.conversation-user-title {
+    text-align: center;
+    font-size: 2rem;
+
 }
 
 .message-box-column {
     background-color: mediumpurple;
+    flex-shrink: 0;
     height: 15vh;
     max-height: 15vh;
     min-height: 15vh;
+
+/*    position: absolute;
+    bottom: 0px;
+    width: 80%;*/
 }
 
 .message-box {
-    background-color: rgb(42,31,100);
-    height: 100%;
+    background-color: rgb(28,28,37);
+    height: 15vh;
     text-align: center;
+    
+    
 }
 
 .message-box-entry {
     width: 50%;
-    height: 30px;
+    height: 2.75rem;
     margin: 10px;
+    background-color: rgb(43,44,52);
+    border-radius: 0.5rem;
+    color: white;
+    border: none;
+    padding: 0.5rem;
 }
 
 .message-box-button {
+    width: 10%;
+    height: 2.75rem;
+    background-color: rgb(93,97,237);
+    border-radius: 0.5rem;
+    color: white;
+    border: none;
 }
+
+.message-from-user {
+    padding: 0.5rem 2rem;
+    width: 50%;
+    
+    
+    margin-left: 50%;
+}
+
+    .message-from-user .message-text {
+        background-color: rgb(93,97,237);
+    }
+
+.message-from-other-user {
+    padding: 0.5rem 2rem;
+    width: 50%;
+
+}
+
+.message-bubble {
+    
+}
+
+.message-sender {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0rem 0rem 0rem 1rem;
+    
+}
+
+.message-text {
+    background-color: rgb(36,37,45);
+    border-radius: 1.75rem;
+    padding: 1rem;
+    font-size: 1rem;
+
+}
+
+.message-date {
+    font-size: .75rem;
+    color: slategray;
+    text-align: end;
+    margin: -0.25rem;
+    margin-right: 1.5rem;
+}
+
+
+
 
 .sidebar-column a {
     color: inherit;
     text-decoration: none;
 }
 
-.message {
+.sidebar-title {
+
 }
 
 .user-search-bar {
-    margin: 3rem 0rem 0rem 0rem;
+    margin: 3rem 0rem 0rem 0.25rem;
+    background-color: rgb(43,44,52);
+    height: 2rem;
+    width: 80%;
+    border-radius: 0.5rem;
+    color: white;
+    border: none;
+    padding: 0.5rem;
 }
 
 .user button {
     width: 80%;
     background-color: transparent;
     color: white;
+    font-size: 1rem;
     margin: 0.25rem;
     padding: 0.25rem;
+    border-width: 0px;
+    border-radius: 0.25rem;
+}
+
+.conversation-user button {
+    width: 80%;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    border-width: 1px;
+    border-color: rgb(93,97,237);
+    border-radius: 0.25rem;
+}
+
+.active-status {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: rgb(93,97,237);
+    border-radius: 50%;
+    display: inline-block;
 }
 
 .user button:hover {
-    background-color: rebeccapurple;
+    background-color: rgb(93,97,237);
 }
 
 .user button:active {
-    background-color: mediumpurple;
+    background-color: rgb(93,97,237);
 }

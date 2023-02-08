@@ -17,7 +17,7 @@ function Conversation() {
                 });
                 const data = await response.json();
                 setMessageList(data);
-                console.log(user.username);
+                
             } catch (error) {
                 console.error(error);
             }
@@ -31,33 +31,46 @@ function Conversation() {
     }, []);
 
 
-    // TODO: change this, it's gross
-    if (user) {
         return (
-            <div className="messages-convo">
+            <div>
+                <p className="conversation-user-title">{otherUser}</p>
                 {
                     messageList.length >= 1 ? messageList.map((message, index) => {
-                        return (
-                            <div key= { index } >
-                                <div className="message">
-                                    <p className="message-sender">{message.sender}</p>
-                                    <p className="message-text"> {message.text} </p>
-                                    <p className="message-date">{message.createDate}</p>
-                                </div>
-                            </div>
-                            ) 
+                        {
+                            if (message.sender == user.username) {
+                                return (
+                                    <div key={index} >
+                                        <div className="message-from-user">
+                                            <div className="message-bubble">
+                                                {/*<p className="message-sender">{message.sender}</p>*/}
+                                                <p className="message-text"> {message.text} </p>
+                                            </div>
+                                            <p className="message-date">{(new Date(message.createDate)).toLocaleTimeString()} {(new Date(message.createDate)).toDateString()}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            else {
+                                return (
+                                    <div key={index} >
+                                        <div className="message-from-other-user">
+                                            <div className="message-bubble">
+                                                {/*<p className="message-sender">{message.sender}</p>*/}
+                                                <p className="message-text"> {message.text} </p>
+                                            </div>
+                                            <p className="message-date">{(new Date(message.createDate)).toLocaleTimeString()} {(new Date(message.createDate)).toDateString()}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        }
+
+                        
                     })
                         : ''
                 }
             </div>
         )
-    }
-
-    return (
-        <div>
-            <h1> Messages</h1>
-        </div>
-    )
 
 }
 
