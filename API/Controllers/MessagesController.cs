@@ -9,22 +9,27 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using API.Interfaces;
 using API.ErrorHandling;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MessagesController : ControllerBase
     {
         private IMessagesService _messagesService;
+        private ITokenService _tokenService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="context"></param>
-        public MessagesController(IMessagesService messagesService)
+        public MessagesController(IMessagesService messagesService, ITokenService tokenService)
         {
             _messagesService = messagesService;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -37,7 +42,13 @@ namespace API.Controllers
         {
             try
             {
-                return await _messagesService.PostMessage(messageDto);
+                // get userName from jwt
+                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "").Replace("bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwt);
+                var senderUsername = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+
+                return await _messagesService.PostMessage(senderUsername, messageDto.Recipient, messageDto.Text);
             }
             catch (CustomException ex)
             {
@@ -100,12 +111,18 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{requestinguser}/{otheruser}/conversation")]
-        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser)
+        [HttpGet("{otherUser}/{range}/conversation")]
+        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string otherUser, int range)
         {
             try
             {
-                return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser);
+                // get userName from jwt
+                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "").Replace("bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwt);
+                var userName = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+
+                return await _messagesService.GetConversationBetweenUsers(userName, otherUser, range);
             }
             catch (CustomException ex)
             {

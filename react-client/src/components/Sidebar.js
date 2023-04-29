@@ -2,7 +2,7 @@
 
 function Sidebar() {
 
-    let user = JSON.parse(localStorage.getItem('user-info')).username;
+    let userInfo = JSON.parse(localStorage.getItem('user-info'));
     let otherUser = JSON.parse(localStorage.getItem('current-conversation-user'));
 
     // fetch users which have existing conversations with user
@@ -12,8 +12,11 @@ function Sidebar() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://localhost:5001/api/users/${user}/conversationlist`, {
-                    method: 'GET'
+                const response = await fetch(`https://localhost:5001/api/users/${userInfo.username}/conversationlist`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + userInfo.token
+                    }
                 });
                 const data = await response.json();
                 setConvoUsers(data);
@@ -50,16 +53,22 @@ function Sidebar() {
 
     // fetch filtered users list
     useEffect(() => {
-        fetch(`https://localhost:5001/api/users/partialusername/${query}`, {
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setUsers(data);
+
+        if (query !== '') {
+            fetch(`https://localhost:5001/api/users/partialusername/${query}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + userInfo.token
+                }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    setUsers(data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     }, [query]);
 
     // selectUser button

@@ -12,9 +12,11 @@ namespace API.Interfaces
         /// <summary>
         /// Creates a message.
         /// </summary>
-        /// <param name="messageDto">Includes Sender, Recipient, and Text.</param>
+        /// <param name="sender">Username of sender.</param>
+        /// <param name="recipient">Username of recipient.</param>
+        /// <param name="text">Content of the message.</param>
         /// <returns>The created message.</returns>
-        Task<ActionResult<Message>> PostMessage(MessageDto messageDto);
+        Task<ActionResult<Message>> PostMessage(string sender, string recipient, string text);
 
         /// <summary>
         /// Retrieves list of messages by sender.
@@ -44,7 +46,7 @@ namespace API.Interfaces
         /// <param name="user1">User in conversation.</param>
         /// <param name="user2">User in conversation.</param>
         /// <returns>List of messages between two users, ordered by CreateDate.</returns>
-        Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string user1, string user2);
+        Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string user1, string user2, int range);
 
         /// <summary>
         /// Deletes message by id.

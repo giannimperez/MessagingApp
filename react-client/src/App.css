@@ -6,6 +6,7 @@
 body {
     margin: 0;
     overflow: hidden;
+    background-color: rgb(28, 28, 37);
 }
 
 /* For Firefox */
@@ -133,14 +134,29 @@ body {
 
 }
 
+.load-more-button {
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    border-width: 1px;
+    border-color: rgb(93,97,237);
+    border-radius: 0.25rem;
+}
+
+.load-more-button:hover {
+    background-color: rgb(93,97,237);
+}
+
 .message-box-column {
     background-color: mediumpurple;
     flex-shrink: 0;
     height: 15vh;
     max-height: 15vh;
     min-height: 15vh;
-
-/*    position: absolute;
+    /*    position: absolute;
     bottom: 0px;
     width: 80%;*/
 }
@@ -279,3 +295,75 @@ body {
 .user button:active {
     background-color: rgb(93,97,237);
 }
+
+
+
+
+
+/*make login css conform to above style patterns*/
+
+
+.login-register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 5%;
+    background-color: rgb(28, 28, 37);
+}
+
+    .login-register-form h1 {
+        margin-bottom: 5%;
+        color: white;
+    }
+
+    .login-register-form label {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 1rem;
+        color: white;
+    }
+
+    .login-register-form input[type="text"],
+    .login-register-form input[type="password"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(36, 37, 45);
+        color: white;
+        font-size: 16px;
+    }
+
+    .login-register-form input[type="submit"] {
+        background-color: rgb(93, 97, 237);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .login-register-form a {
+        color: rgb(93, 97, 237);
+        text-decoration: none;
+    }
+
+        .login-register-form input[type="submit"]:hover,
+        .login-register-form a:hover {
+            opacity: 0.8;
+        }
+
+    .login-register-form input[type="text"]:focus,
+    .login-register-form input[type="password"]:focus {
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(93, 97, 237, 0.5);
+        background-color: rgb(43, 44, 52);
+    }

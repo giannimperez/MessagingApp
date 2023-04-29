@@ -97,7 +97,7 @@ namespace API.Services
         /// </summary>
         /// <param name="user">User save encode password for.</param>
         /// <param name="password">Password to encode.</param>
-        private void EncodePassword(User user, string password) // TODO: reuse for password changes
+        private void EncodePassword(User user, string password)
         {
             using var hmac = new HMACSHA512();
 

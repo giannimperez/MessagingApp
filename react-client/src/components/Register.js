@@ -1,20 +1,23 @@
 ﻿import React, { useState } from 'react';
 
-function Login() {
+function Register() {
 
     // user info
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [dob, setDob] = useState('');
 
+
+    // TODO: change to register POST
     // send login POST
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://localhost:5001/api/accounts/login', {
+        fetch('https://localhost:5001/api/accounts/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username: username, password: password }),
+            body: JSON.stringify({ username: username, password: password, dateOfBirth: dob}),
         })
             .then((response) => response.json())
             .then((data) => {
@@ -29,7 +32,7 @@ function Login() {
     return (
             // Login form
         <form className="login-register-form" onSubmit={handleSubmit}>
-            <h1>Login</h1>
+            <h1>Create Account</h1>
                 <label>
                     Username:
                     <input
@@ -47,11 +50,19 @@ function Login() {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                 </label>
-                <br />
+            <br />
+            <label>
+                Date of birth:
+                <input
+                    type="date"
+                    value={dob}
+                    onChange={(event) => setDob(event.target.value)}
+                />
+            </label>
             <input type="submit" value="Submit" />
-            <a href="register">Create account</a>
+            <a href="login">Already have an account?</a>
             </form>
     );
 }
 
-export default Login;
+export default Register;

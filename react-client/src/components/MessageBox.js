@@ -2,20 +2,22 @@
 
 function MessageBox() {
 
+    // messagebox text
     const [text, setText] = useState('');
 
     // users in conversation
-    let user = JSON.parse(localStorage.getItem('user-info')).username;
+    let userInfo = JSON.parse(localStorage.getItem('user-info'));
     let otherUser = JSON.parse(localStorage.getItem('current-conversation-user'));
 
-    // Posts the message
+    // send message POST
     const handleSubmit = (event) => {
         fetch('https://localhost:5001/api/messages', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'bearer ' + userInfo.token
                 },
-                body: JSON.stringify({ sender: user, recipient: otherUser, text: text }),
+                body: JSON.stringify({ recipient: otherUser, text: text }),
             })
             .then((response) => response.json())
             .then((data) => {
@@ -26,7 +28,7 @@ function MessageBox() {
             });
     };
 
-    // Selects input every render
+    // selects input every render
     const inputRef = useRef(null);
     useEffect(() => {
         inputRef.current.select();
@@ -34,7 +36,8 @@ function MessageBox() {
 
 
     return (
-        <div className = "message-box" >
+        // MessageBox form
+        <div className="message-box" >
             <form onSubmit = { handleSubmit } >
                 <input
                     ref={inputRef}

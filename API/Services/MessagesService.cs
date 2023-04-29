@@ -22,13 +22,13 @@ namespace API.Services
 
 
         /// <inheritdoc></inheritdoc>
-        public async Task<ActionResult<Message>> PostMessage(MessageDto messageDto)
+        public async Task<ActionResult<Message>> PostMessage(string sender, string recipient, string text)
         {
             Message message = new Message
             {
-                Sender = messageDto.Sender,
-                Recipient = messageDto.Recipient,
-                Text = messageDto.Text
+                Sender = sender,
+                Recipient = recipient,
+                Text = text
             };
 
             await _context.Messages.AddAsync(message);
@@ -56,32 +56,37 @@ namespace API.Services
         {
             var messages = await _context.Messages
                 .Where(x => x.Sender == sender)
-                .Where(y => y.Recipient == recipient).ToListAsync();
+                .Where(y => y.Recipient == recipient)
+                .OrderBy(z => z.CreateDate)
+                .Take(5)
+                .ToListAsync();
 
             return messages;
         }
 
         /// <inheritdoc></inheritdoc>
-        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser)
+        public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser, int range)
         {
             var messages = await _context.Messages
                 .Where(x => x.Sender == requestingUser || x.Sender == otherUser)
-                .Where(y => y.Recipient == otherUser || y.Recipient == requestingUser).ToListAsync();
+                .Where(y => y.Recipient == otherUser || y.Recipient == requestingUser)
+                .Where(z => z.Sender != z.Recipient)
+                .OrderByDescending(z => z.CreateDate)
+                .Take(range)
+                .ToListAsync();
 
 
-            // SET ReadByRecipient: true on each message in the messages list.
+
+
+/*            // SET ReadByRecipient: true on each message in the messages list.
             foreach(Message message in messages)
             {
                 if(message.Recipient == requestingUser)
                 {
                     // message.ReadByRecipient = true;
                 }
-            }
+            }*/
 
-
-            /*messages.AddRange(await _context.Messages
-                .Where(x => x.Sender == user2)
-                .Where(y => y.Recipient == user1).ToListAsync());*/
 
             messages.Sort((x, y) => x.CreateDate.CompareTo(y.CreateDate));
 
