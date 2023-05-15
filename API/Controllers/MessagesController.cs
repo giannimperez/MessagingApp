@@ -48,7 +48,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.Message);
+                return StatusCode(ex.StatusCode, ex.JsonMessage);
             }
         }
 
@@ -118,7 +118,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.Message);
+                return StatusCode(ex.StatusCode, ex.JsonMessage);
             }
         }
 
@@ -131,7 +131,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.Message);
+                return StatusCode(ex.StatusCode, ex.JsonMessage);
             }
         }
     }

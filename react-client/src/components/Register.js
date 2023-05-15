@@ -1,4 +1,6 @@
 ﻿import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
 
@@ -7,30 +9,42 @@ function Register() {
     const [password, setPassword] = useState('');
     const [dob, setDob] = useState('');
 
-
-    // TODO: change to register POST
-    // send login POST
+    // send register POST
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://localhost:5001/api/accounts/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username: username, password: password, dateOfBirth: dob}),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                localStorage.setItem('user-info', JSON.stringify(data));
-                window.location.replace('messages');
+        if (username != '' && password != '' && dob != '') {
+            fetch('https://localhost:5001/api/accounts/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password, dateOfBirth: dob }),
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => {
+                    if (!response.ok) { // Handle bad responses
+                        return response.json().then((data) => {
+
+                            toast.error(data.Message); // Display error modal
+                            throw new Error(data.Message);
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    localStorage.setItem('user-info', JSON.stringify(data)); // Save user data locally
+                    window.location.replace('messages');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+        else {
+            toast.error("Username, Password and DOB Required"); // Display error modal
+        }
     };
 
     return (
-            // Login form
+            // Register form
         <form className="login-register-form" onSubmit={handleSubmit}>
             <h1>Create Account</h1>
                 <label>
@@ -61,6 +75,18 @@ function Register() {
             </label>
             <input type="submit" value="Submit" />
             <a href="login">Already have an account?</a>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={false}
+                theme="colored"
+            />
             </form>
     );
 }

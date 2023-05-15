@@ -1,4 +1,6 @@
 ﻿import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
 
@@ -9,21 +11,35 @@ function Login() {
     // send login POST
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('https://localhost:5001/api/accounts/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username: username, password: password }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                localStorage.setItem('user-info', JSON.stringify(data));
-                window.location.replace('messages');
+        if (username != '' && password != '') {
+            fetch('https://localhost:5001/api/accounts/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password }),
             })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => {
+                    if (!response.ok) { // Handle bad responses
+                        return response.json().then((data) => {
+
+                            toast.error(data.Message); // Display error modal
+                            throw new Error(data.Message);
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    localStorage.setItem('user-info', JSON.stringify(data)); // Save user data locally
+                    window.location.replace('messages'); 
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+        else {
+            toast.error("Username and Password Required"); // Display error modal
+        }
     };
 
     return (
@@ -50,7 +66,19 @@ function Login() {
                 <br />
             <input type="submit" value="Submit" />
             <a href="register">Create account</a>
-            </form>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={false}
+                theme="colored"
+            />
+        </form>
     );
 }
 

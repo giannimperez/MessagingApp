@@ -7,12 +7,14 @@ namespace API.ErrorHandling
 
         public int StatusCode { get; set; }
         public string Message { get; set; }
+        public string JsonMessage { get; set; }
 
         public CustomException(int statusCode, string message) 
             : base(message)
         {
             StatusCode = statusCode;
             Message = base.Message;
+            JsonMessage = $"{{\"Message\":\"{Message}\"}}";
         }
 
 
