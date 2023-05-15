@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -22,25 +23,6 @@ namespace API.Services
 
         public string CreateToken(User user)
         {
-            /*            var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, user.UserName)
-                        };
-
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                            _config.GetSection("AppSettings:Token").Value));
-
-                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-                        var token = new JwtSecurityToken(
-                            claims: claims,
-                            expires: System.DateTime.Now.AddDays(7),
-                            signingCredentials: creds);
-
-                        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-
-                        return jwt;*/
 
             var claims = new List<Claim>
             {
@@ -61,6 +43,16 @@ namespace API.Services
 
             return tokenHandler.WriteToken(token);
 
+        }
+
+        public string GetUserFromAuthHeader(string authorizationHeader)
+        {
+            var strippedJwt = authorizationHeader.ToString().Replace("Bearer ", "").Replace("bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(strippedJwt);
+            var senderUsername = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+
+            return senderUsername;
         }
     }
 }

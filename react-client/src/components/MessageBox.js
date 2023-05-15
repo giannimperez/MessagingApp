@@ -1,17 +1,15 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 
 function MessageBox() {
-
-    // messagebox text
     const [text, setText] = useState('');
 
-    // users in conversation
-    let userInfo = JSON.parse(localStorage.getItem('user-info'));
-    let otherUser = JSON.parse(localStorage.getItem('current-conversation-user'));
+    const userInfo = JSON.parse(localStorage.getItem('user-info'));
+    const otherUser = JSON.parse(localStorage.getItem('current-conversation-user'));
 
-    // send message POST
     const handleSubmit = (event) => {
-        fetch('https://localhost:5001/api/messages', {
+        event.preventDefault(); // Prevents rerenders from cancelling POST
+        if (text != '') {
+            fetch('https://localhost:5001/api/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -19,41 +17,35 @@ function MessageBox() {
                 },
                 body: JSON.stringify({ recipient: otherUser, text: text }),
             })
-            .then((response) => response.json())
-            .then((data) => {
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    setText(''); // Reset textbox
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
 
-    // selects input every render
     const inputRef = useRef(null);
     useEffect(() => {
-        inputRef.current.select();
+        inputRef.current.select(); // Select textbox
     }, []);
 
-
     return (
-        // MessageBox form
-        <div className="message-box" >
-            <form onSubmit = { handleSubmit } >
+        <div className="message-box">
+            <form onSubmit={handleSubmit}>
                 <input
                     ref={inputRef}
-                    className = "message-box-entry"
-                    type = "text"
+                    className="message-box-entry"
+                    type="text"
                     value={text}
                     placeholder="Write a message"
-                    onChange = {(event) => setText(event.target.value)}
+                    onChange={(event) => setText(event.target.value)}
                 />
-                <input
-                    className="message-box-button"
-                    type = "submit"
-                    value="Send"
-                />
-            </form> 
-        </div >
+                <input className="message-box-button" type="submit" value="Send" />
+            </form>
+        </div>
     );
 }
 

@@ -19,14 +19,16 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         private IUsersService _usersService;
+        private ITokenService _tokenService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="context"></param>
-        public UsersController(IUsersService usersService)
+        public UsersController(IUsersService usersService, ITokenService tokenService)
         {
             _usersService = usersService;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
+/*        /// <summary>
         /// Retrieves a user by Id.
         /// </summary>
         /// <param name="id">Id of the user to retrieve.</param>
@@ -62,7 +64,7 @@ namespace API.Controllers
             {
                 return StatusCode(ex.StatusCode, ex.Message);
             }
-        }
+        }*/
 
         /// <summary>
         /// Retrieves a user by username.
@@ -85,14 +87,16 @@ namespace API.Controllers
         /// <summary>
         /// Retrieves all users whose usernames match a partial username.
         /// </summary>
-        /// <param name="username">Partial username to search for.</param>
+        /// <param name="partialUsername">Partial username to search for.</param>
         /// <returns>List of users containing the partial username.</returns>
-        [HttpGet("partialusername/{username}")]
-        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string username)
+        [HttpGet("partialusername/{partialUsername}")]
+        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string partialUsername)
         {
             try
             {
-                return await _usersService.GetUserListByUsername(username);
+                var requestingUser = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+
+                return await _usersService.GetUserListByUsername(requestingUser, partialUsername);
             }
             catch (CustomException ex)
             {

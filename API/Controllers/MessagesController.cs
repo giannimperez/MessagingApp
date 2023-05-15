@@ -35,20 +35,16 @@ namespace API.Controllers
         /// <summary>
         /// Creates a message.
         /// </summary>
-        /// <param name="messageDto">Includes Sender, Recipient, and Text.</param>
+        /// <param name="messageDto">Includes Recipient and Text.</param>
         /// <returns>The created message.</returns>
         [HttpPost]
         public async Task<ActionResult<Message>> PostMessage(MessageDto messageDto)
         {
             try
             {
-                // get userName from jwt
-                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "").Replace("bearer ", "");
-                var handler = new JwtSecurityTokenHandler();
-                var token = handler.ReadJwtToken(jwt);
-                var senderUsername = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+                var sender = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
-                return await _messagesService.PostMessage(senderUsername, messageDto.Recipient, messageDto.Text);
+                return await _messagesService.PostMessage(sender, messageDto.Recipient, messageDto.Text);
             }
             catch (CustomException ex)
             {
@@ -56,7 +52,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
+/*        /// <summary>
         /// Retrieves list of messages by sender.
         /// </summary>
         /// <param name="sender">Sender to retrieve messages for.</param>
@@ -72,9 +68,9 @@ namespace API.Controllers
             {
                 return StatusCode(ex.StatusCode, ex.Message);
             }
-        }
+        }*/
 
-        /// <summary>
+/*        /// <summary>
         /// Retrieves list of messages by recipient.
         /// </summary>
         /// <param name="recipient">Recipient to retrieve messages for.</param>
@@ -90,9 +86,9 @@ namespace API.Controllers
             {
                 return StatusCode(ex.StatusCode, ex.Message);
             }
-        }
+        }*/
 
-        /// <summary>
+/*        /// <summary>
         /// Retrieves list of messages between a sender and recipient.
         /// </summary>
         /// <param name="sender">Sender to filter by.</param>
@@ -109,20 +105,16 @@ namespace API.Controllers
             {
                 return StatusCode(ex.StatusCode, ex.Message);
             }
-        }
+        }*/
 
         [HttpGet("{otherUser}/{range}/conversation")]
         public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string otherUser, int range)
         {
             try
             {
-                // get userName from jwt
-                var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "").Replace("bearer ", "");
-                var handler = new JwtSecurityTokenHandler();
-                var token = handler.ReadJwtToken(jwt);
-                var userName = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
+                var requestingUser = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
-                return await _messagesService.GetConversationBetweenUsers(userName, otherUser, range);
+                return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser, range);
             }
             catch (CustomException ex)
             {

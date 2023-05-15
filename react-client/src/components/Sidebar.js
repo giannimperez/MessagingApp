@@ -32,21 +32,6 @@ function Sidebar() {
     }, []);
 
 
-
-/*    useEffect(() => {
-        fetch(`https://localhost:5001/api/users/${user}/conversationlist`, {
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setConvoUsers(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);*/
-
-
     // search for users by partial username
     const [users, setUsers] = useState([]);
     const [query, setQuery] = useState('');
@@ -139,23 +124,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-
-
-
-
-/*
-    const [userList, setUserList] = useState([]);
-
-    // fetch list of all users
-    useEffect(() => {
-        fetch(`https://localhost:5001/api/users`, {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(data => {
-                setUserList(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);*/

@@ -56,7 +56,7 @@ namespace API.Services
         }
 
         /// <inheritdoc></inheritdoc>
-        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string username)
+        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string requestingUser, string username)
         {
             List<User> users = new List<User>();
 
@@ -73,13 +73,16 @@ namespace API.Services
 
             foreach (var user in users)
             {
-                MemberDto memberDto = new MemberDto
+                if (user.UserName != requestingUser) // skips requestingUser
                 {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    IsActive = user.IsActive
-                };
-                returnUsers.Add(memberDto);
+                    MemberDto memberDto = new MemberDto
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        IsActive = user.IsActive
+                    };
+                    returnUsers.Add(memberDto);
+                }
             }
 
             return returnUsers;
