@@ -48,24 +48,6 @@ namespace API.Controllers
             }
         }
 
-/*        /// <summary>
-        /// Retrieves a user by Id.
-        /// </summary>
-        /// <param name="id">Id of the user to retrieve.</param>
-        /// <returns>User object.</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
-        {
-            try
-            {
-                return await _usersService.GetUserById(id);
-            }
-            catch (CustomException ex)
-            {
-                return StatusCode(ex.StatusCode, ex.Message);
-            }
-        }*/
-
         /// <summary>
         /// Retrieves a user by username.
         /// </summary>
