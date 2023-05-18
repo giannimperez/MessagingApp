@@ -91,20 +91,12 @@ namespace API.Services
         /// <inheritdoc></inheritdoc>
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
         {
-            // TODO: fix async issue here
-            /*var users = _context.Messages
-                .Where(m => m.Recipient == username || m.Sender == username)
-                .Join(_context.Users, m => m.Recipient, u => u.UserName, (m, u) => u)
-                .Distinct().ToList();*/
-
-            var users = _context.Messages
+            var users = await _context.Messages
                 .Where(m => (m.Sender == username || m.Recipient == username))
                 .Select(m => m.Sender == username ? m.Recipient : m.Sender)
                 .Distinct()
                 .Join(_context.Users, un => un, u => u.UserName, (un, u) => u)
-                .ToList();
-
-
+                .ToListAsync();
 
             List<MemberDto> returnUsers = new List<MemberDto>();
 

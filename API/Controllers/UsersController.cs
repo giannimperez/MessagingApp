@@ -73,7 +73,7 @@ namespace API.Controllers
         {
             try
             {
-                var requestingUser = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _usersService.GetUserListByUsername(requestingUser, partialUsername);
             }

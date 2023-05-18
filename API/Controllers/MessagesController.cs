@@ -38,7 +38,7 @@ namespace API.Controllers
         {
             try
             {
-                var sender = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var sender = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _messagesService.PostMessage(sender, messageDto.Recipient, messageDto.Text);
             }
@@ -53,7 +53,7 @@ namespace API.Controllers
         {
             try
             {
-                var requestingUser = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser, range);
             }

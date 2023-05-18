@@ -29,19 +29,19 @@ namespace API.Services
             if (await UserExists(registerDto.Username))
                 throw new CustomException(400, "Username already taken");
 
-            CheckAge(registerDto.DateOfBirth);
+            await CheckAge(registerDto.DateOfBirth);
 
             var user = new User
             {
                 UserName = registerDto.Username,
                 DateOfBirth = registerDto.DateOfBirth
             };
-            EncodePassword(user, registerDto.Password);
+            await EncodeUsersPassword(user, registerDto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
+            return new UserDto { Username = user.UserName, Token = await _tokenService.CreateToken(user) };
         }
 
         /// <inheritdoc/>
@@ -62,7 +62,7 @@ namespace API.Services
                     throw new CustomException(400, "Incorrect password");
             }
 
-            return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
+            return new UserDto { Username = user.UserName, Token = await _tokenService.CreateToken(user) };
         }
 
 
@@ -72,16 +72,16 @@ namespace API.Services
         }
 
 
-        private void EncodePassword(User user, string password)
+        private async Task EncodeUsersPassword(User user, string password)
         {
             using var hmac = new HMACSHA512();
 
-            user.PaswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            user.PaswordHash = await Task.Run(() => hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
             user.PasswordSalt = hmac.Key;
         }
 
 
-        private int CheckAge(DateTime dateOfBirth)
+        private async Task<int> CheckAge(DateTime dateOfBirth)
         {
             var currentDate = DateTime.Today;
             var age = currentDate.Year - dateOfBirth.Year;

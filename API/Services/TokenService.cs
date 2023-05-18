@@ -7,10 +7,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace API.Services
 {
-    public class TokenService :ITokenService
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
@@ -18,13 +19,12 @@ namespace API.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
         }
 
         /// <inheritdoc/>
-        public string CreateToken(User user)
+        public async Task<string> CreateToken(User user)
         {
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName)
@@ -40,17 +40,17 @@ namespace API.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = await Task.Run(() => tokenHandler.CreateToken(tokenDescriptor));
 
             return tokenHandler.WriteToken(token);
         }
 
         /// <inheritdoc/>
-        public string GetUsernameFromAuthHeader(string authorizationHeader)
+        public async Task<string> GetUsernameFromAuthHeader(string authorizationHeader)
         {
             var strippedJwt = authorizationHeader.ToString().Replace("Bearer ", "").Replace("bearer ", "");
             var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(strippedJwt);
+            var token = await Task.Run(() => handler.ReadJwtToken(strippedJwt));
             var senderUsername = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name)?.Value;
 
             return senderUsername;
