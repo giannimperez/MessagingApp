@@ -6,25 +6,24 @@ namespace API.ErrorHandling
     {
 
         public int StatusCode { get; set; }
-        public string Message { get; set; }
-        public string JsonMessage { get; set; }
+        public override string Message { get; }
+        public string MessageJson { get; set; }
+        public override string StackTrace { get; }
 
-        public CustomException(int statusCode, string message) 
+        public CustomException(int statusCode, string message) // change statusCode type to HttpStatusCode
             : base(message)
         {
             StatusCode = statusCode;
-            Message = base.Message;
-            JsonMessage = $"{{\"Message\":\"{Message}\"}}";
+            Message = message;
+            MessageJson = $"{{\"Message\":\"{Message}\"}}";
         }
 
-
-
-        public CustomException(int statusCode, string message = null, string details = null)
+        public CustomException(int statusCode, string message = null, string innerException = null) // This is not right
+            : base(message)
         {
             StatusCode = statusCode;
             Message = message;
-            //Details = details;
+            StackTrace = innerException;
         }
-
     }
 }

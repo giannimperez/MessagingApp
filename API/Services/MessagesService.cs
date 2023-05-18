@@ -20,8 +20,7 @@ namespace API.Services
             _context = context;
         }
 
-
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<Message>> PostMessage(string sender, string recipient, string text)
         {
             Message message = new Message
@@ -37,21 +36,21 @@ namespace API.Services
             return message;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBySender(string sender)
         {
             var messages = await _context.Messages.Where(x => x.Sender == sender).ToListAsync();
             return messages;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesByRecipient(string recipient)
         {
             var messages = await _context.Messages.Where(x => x.Recipient == recipient).ToListAsync();
             return messages;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient)
         {
             var messages = await _context.Messages
@@ -64,7 +63,7 @@ namespace API.Services
             return messages;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string requestingUser, string otherUser, int range)
         {
             var messages = await _context.Messages
@@ -75,25 +74,12 @@ namespace API.Services
                 .Take(range)
                 .ToListAsync();
 
-
-
-
-/*            // SET ReadByRecipient: true on each message in the messages list.
-            foreach(Message message in messages)
-            {
-                if(message.Recipient == requestingUser)
-                {
-                    // message.ReadByRecipient = true;
-                }
-            }*/
-
-
             messages.Sort((x, y) => x.CreateDate.CompareTo(y.CreateDate));
 
             return messages;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<bool>> DeleteMessage(int id)
         {
             var message = await _context.Messages.FindAsync(id);
@@ -106,8 +92,5 @@ namespace API.Services
 
             return true;
         }
-
-        
-
     }
 }

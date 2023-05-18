@@ -1,9 +1,7 @@
 ﻿using API.Data;
-using API.ErrorHandling;
 using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

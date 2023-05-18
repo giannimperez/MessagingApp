@@ -1,16 +1,12 @@
-﻿using API.Data;
-using API.DTOs;
+﻿using API.DTOs;
 using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using API.Interfaces;
 using API.ErrorHandling;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Controllers
 {
@@ -42,13 +38,13 @@ namespace API.Controllers
         {
             try
             {
-                var sender = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var sender = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _messagesService.PostMessage(sender, messageDto.Recipient, messageDto.Text);
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -57,13 +53,13 @@ namespace API.Controllers
         {
             try
             {
-                var requestingUser = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var requestingUser = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser, range);
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -76,7 +72,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
     }

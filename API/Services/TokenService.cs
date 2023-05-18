@@ -21,6 +21,7 @@ namespace API.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
+        /// <inheritdoc/>
         public string CreateToken(User user)
         {
 
@@ -42,10 +43,10 @@ namespace API.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-
         }
 
-        public string GetUserFromAuthHeader(string authorizationHeader)
+        /// <inheritdoc/>
+        public string GetUsernameFromAuthHeader(string authorizationHeader)
         {
             var strippedJwt = authorizationHeader.ToString().Replace("Bearer ", "").Replace("bearer ", "");
             var handler = new JwtSecurityTokenHandler();

@@ -1,15 +1,7 @@
-﻿using API.Data;
-using API.DTOs;
+﻿using API.DTOs;
 using API.ErrorHandling;
 using API.Interfaces;
-using API.Models;
-using API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -43,7 +35,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -61,7 +53,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
     }

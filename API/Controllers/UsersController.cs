@@ -1,14 +1,11 @@
-﻿using API.Data;
-using API.DTOs;
+﻿using API.DTOs;
 using API.ErrorHandling;
 using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -44,7 +41,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -62,7 +59,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -76,13 +73,13 @@ namespace API.Controllers
         {
             try
             {
-                var requestingUser = _tokenService.GetUserFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+                var requestingUser = _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _usersService.GetUserListByUsername(requestingUser, partialUsername);
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -95,7 +92,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -114,7 +111,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
 
@@ -132,7 +129,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.JsonMessage);
+                return StatusCode(ex.StatusCode, ex.MessageJson);
             }
         }
     }

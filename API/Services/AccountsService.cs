@@ -17,23 +17,13 @@ namespace API.Services
         private DataContext _context;
         private ITokenService _tokenService;
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="tokenService"></param>
         public AccountsService(DataContext context, ITokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;
         }
 
-
-        /// <summary>
-        /// Creates a new user.
-        /// </summary>
-        /// <param name="registerDto">Includes desired username and password.</param>
-        /// <returns>UserDto which includes username and token.</returns>
+        /// <inheritdoc/>
         public async Task<ActionResult<UserDto>> CreateUser(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username))
@@ -54,12 +44,7 @@ namespace API.Services
             return new UserDto { Username = user.UserName, Token = _tokenService.CreateToken(user) };
         }
 
-
-        /// <summary>
-        /// Retrieves UserDto.
-        /// </summary>
-        /// <param name="loginDto">Includes username and password of existing account.</param>
-        /// <returns>UserDto which includes username and token.</returns>
+        /// <inheritdoc/>
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             // Validate username
@@ -81,22 +66,12 @@ namespace API.Services
         }
 
 
-        /// <summary>
-        /// Checks if a user exists.
-        /// </summary>
-        /// <param name="username">Username to check.</param>
-        /// <returns>True if user exists</returns>
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username);
         }
 
 
-        /// <summary>
-        /// Encodes a user defined password into a hash and salt, to be stored in db.
-        /// </summary>
-        /// <param name="user">User save encode password for.</param>
-        /// <param name="password">Password to encode.</param>
         private void EncodePassword(User user, string password)
         {
             using var hmac = new HMACSHA512();
@@ -106,12 +81,6 @@ namespace API.Services
         }
 
 
-        /// <summary>
-        /// Checks age.
-        /// </summary>
-        /// <param name="dateOfBirth">DateTime to check.</param>
-        /// <returns>Age</returns>
-        /// <exception cref="CustomException"></exception>
         private int CheckAge(DateTime dateOfBirth)
         {
             var currentDate = DateTime.Today;

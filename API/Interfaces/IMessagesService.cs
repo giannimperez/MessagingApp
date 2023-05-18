@@ -41,10 +41,11 @@ namespace API.Interfaces
         Task<ActionResult<IEnumerable<Message>>> GetMessagesBetweenUsers(string sender, string recipient);
 
         /// <summary>
-        /// Retrieves list of messages between two users ordered by CreateDate.
+        /// Retrieves list of messages between two users ordered by CreateDate descending.
         /// </summary>
         /// <param name="user1">User in conversation.</param>
-        /// <param name="user2">User in conversation.</param>
+        /// <param name="user2">Other user in conversation.</param>
+        /// <param name="range">Number of messages to return.</param>
         /// <returns>List of messages between two users, ordered by CreateDate.</returns>
         Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string user1, string user2, int range);
 

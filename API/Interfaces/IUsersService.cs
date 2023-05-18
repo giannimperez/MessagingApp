@@ -29,10 +29,11 @@ namespace API.Interfaces
         Task<ActionResult<MemberDto>> GetUserByUsername(string username);
 
         /// <summary>
-        /// Retrieves all users whose usernames match a partial username.
+        /// Retrieves all users whose usernames match a partial username except the requesting user.
         /// </summary>
-        /// <param name="username">Partial username to search for.</param>
-        /// <returns>List of users containing the partial username.</returns>
+        /// <param name="requestingUser">Username of user requesting list.</param>
+        /// <param name="partialUsername">Partial username to search for.</param>
+        /// <returns>List of users containing the partial username excluding the requesting user.</returns>
         Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string requestingUser, string partialUsername);
 
         /// <summary>
