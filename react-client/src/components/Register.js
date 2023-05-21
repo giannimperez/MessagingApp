@@ -1,69 +1,81 @@
-﻿import React, { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+﻿import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
-
     // user info
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [dob, setDob] = useState('');
+    let [username, setUsername] = useState("");
+    let [password, setPassword] = useState("");
+    let [dob, setDob] = useState("");
 
-    // send register POST
+    // creates a new user and saves jwt to local storage
+    async function register() {
+        try {
+            if (username != "" && password != "" && dob != "") {
+                const response = await fetch(
+                    "https://localhost:5001/api/accounts/register",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            dateOfBirth: dob,
+                        }),
+                    }
+                );
+
+                // Handle bad API response
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    const errorMessage = errorData.Message;
+
+                    toast.error(errorMessage); // display error modal
+                    throw new Error(errorMessage);
+                }
+
+                // Save user data and redirect
+                localStorage.setItem(
+                    "user-info",
+                    JSON.stringify(await response.json())
+                );
+                window.location.replace("messages");
+            } else {
+                toast.error("Username, Password and DOB Required"); // Display error modal
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // handle register form submit
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (username != '' && password != '' && dob != '') {
-            fetch('https://localhost:5001/api/accounts/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, password: password, dateOfBirth: dob }),
-            })
-                .then((response) => {
-                    if (!response.ok) { // Handle bad responses
-                        return response.json().then((data) => {
-
-                            toast.error(data.Message); // Display error modal
-                            throw new Error(data.Message);
-                        });
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    localStorage.setItem('user-info', JSON.stringify(data)); // Save user data locally
-                    window.location.replace('messages');
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-        else {
-            toast.error("Username, Password and DOB Required"); // Display error modal
-        }
+        register();
     };
 
     return (
-            // Register form
         <form className="login-register-form" onSubmit={handleSubmit}>
             <h1>Create Account</h1>
-                <label>
-                    Username:
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                    />
-                </label>
-                <br />
-                <label>
-                    Password:
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                    />
-                </label>
+            <label>
+                Username:
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value)}
+                />
+            </label>
+            <br />
+            <label>
+                Password:
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+            </label>
             <br />
             <label>
                 Date of birth:
@@ -87,7 +99,7 @@ function Register() {
                 pauseOnHover={false}
                 theme="colored"
             />
-            </form>
+        </form>
     );
 }
 

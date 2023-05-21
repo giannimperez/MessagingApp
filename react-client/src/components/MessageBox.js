@@ -1,35 +1,46 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from "react";
 
 function MessageBox() {
-    const [text, setText] = useState('');
+    // users in conversation
+    const userInfo = JSON.parse(localStorage.getItem("user-info"));
+    let otherUser = JSON.parse(localStorage.getItem("current-conversation-user"));
 
-    const userInfo = JSON.parse(localStorage.getItem('user-info'));
-    const otherUser = JSON.parse(localStorage.getItem('current-conversation-user'));
+    // text to send in message
+    let [text, setText] = useState("");
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Prevents rerenders from cancelling POST
-        if (text != '') {
-            fetch('https://localhost:5001/api/messages', {
-                method: 'POST',
+    // creates new message
+    async function sendMessage() {
+        try {
+            const response = await fetch("https://localhost:5001/api/messages", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'bearer ' + userInfo.token
+                    "Content-Type": "application/json",
+                    Authorization: "bearer " + userInfo.token,
                 },
                 body: JSON.stringify({ recipient: otherUser, text: text }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    setText(''); // Reset textbox
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            });
+        } catch (error) {
+            console.error(error);
         }
+    }
+
+    // send message POST
+    const handleSubmit = (event) => {
+        event.preventDefault(); // prevents rerenders from cancelling POST request
+
+        if (text === "") {
+            return;
+        }
+
+        sendMessage();
+
+        setText(""); // reset textbox
     };
 
+    // select textbox on render
     const inputRef = useRef(null);
     useEffect(() => {
-        inputRef.current.select(); // Select textbox
+        inputRef.current.select(); // select textbox
     }, []);
 
     return (

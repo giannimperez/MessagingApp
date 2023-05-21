@@ -1,369 +1,291 @@
 * {
-    box-sizing: border-box;
-
+  box-sizing: border-box;
 }
-
 body {
-    margin: 0;
-    overflow: hidden;
-    background-color: rgb(28, 28, 37);
+  margin: 0;
+  overflow: hidden;
+  background-color: rgb(28, 28, 37);
 }
-
 /* For Firefox */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(50,50,65) rgb(28,28,37);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(50, 50, 65) rgb(28, 28, 37);
 }
-
 /* For Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
-
 *::-webkit-scrollbar-track {
-    background: rgb(28,28,37);
+  background: rgb(28, 28, 37);
 }
-
 *::-webkit-scrollbar-thumb {
-    background-color: rgb(50,50,65);
-    border-radius: 20px;
-    border: 3px solid rgb(50,50,65);
+  background-color: rgb(50, 50, 65);
+  border-radius: 20px;
+  border: 3px solid rgb(50, 50, 65);
 }
-
 /* WebKit/Blink Browsers */
 ::selection {
-    background: rgb(83,87,217);
+  background: rgb(83, 87, 217);
 }
-
 /* Gecko Browsers */
 ::-moz-selection {
-    background: rgb(93,97,237);
+  background: rgb(93, 97, 237);
 }
-
 .nav {
-    background-color: rgb(43,43,54);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 2rem;
-    padding: 0 1rem;
+  background-color: rgb(43, 43, 54);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 0 1rem;
 }
-
 .site-title {
-    font-size: 2rem;
+  font-size: 2rem;
 }
-
 .nav ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
-
 .nav a {
-    color: inherit;
-    text-decoration: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: .25rem;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
 }
-
 .nav li:hover {
-    background-color: #777;
+  background-color: #777;
 }
-
 .nav li.active {
-    background-color: #555;
+  background-color: #555;
 }
-
-.message-page-container {
-    /*margin: 15px;*/
-    /*background-color: red;*/
-}
-
 .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
 }
-
 .small-column {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 100%;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
 }
-
 .big-column {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 100%;
-    flex: 3;
-
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 3;
 }
-
 .sidebar-column {
-    background-color: rgb(50,50,65);
-    color: white;
-    height: 100vh;
-    padding: 5%;
+  background-color: rgb(50, 50, 65);
+  color: white;
+  height: 100vh;
+  padding: 5%;
 }
-
 .conversation-column {
-    background-color: rgb(28,28,37);
-    color: white;
-    height: 85vh;
-    max-height: 85vh;
-    min-height: 85vh;
-    padding: 5%;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: space-between;
+  background-color: rgb(28, 28, 37);
+  color: white;
+  height: 85vh;
+  max-height: 85vh;
+  min-height: 85vh;
+  padding: 5%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
 }
-
 .conversation-user-title {
-    text-align: center;
-    font-size: 2rem;
-
+  text-align: center;
+  font-size: 2rem;
 }
-
 .load-more-button {
-    width: 100%;
-    background-color: transparent;
-    color: white;
-    font-size: 1rem;
-    margin: 0.25rem;
-    padding: 0.25rem;
-    border-width: 1px;
-    border-color: rgb(93,97,237);
-    border-radius: 0.25rem;
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  border-width: 1px;
+  border-color: rgb(93, 97, 237);
+  border-radius: 0.25rem;
 }
-
 .load-more-button:hover {
-    background-color: rgb(93,97,237);
+  background-color: rgb(93, 97, 237);
 }
-
 .message-box-column {
-    background-color: mediumpurple;
-    flex-shrink: 0;
-    height: 15vh;
-    max-height: 15vh;
-    min-height: 15vh;
-    /*    position: absolute;
-    bottom: 0px;
-    width: 80%;*/
+  background-color: mediumpurple;
+  flex-shrink: 0;
+  height: 15vh;
+  max-height: 15vh;
+  min-height: 15vh;
 }
-
 .message-box {
-    background-color: rgb(28,28,37);
-    height: 15vh;
-    text-align: center;
-    
-    
+  background-color: rgb(28, 28, 37);
+  height: 15vh;
+  text-align: center;
 }
-
 .message-box-entry {
-    width: 50%;
-    height: 2.75rem;
-    margin: 10px;
-    background-color: rgb(43,44,52);
-    border-radius: 0.5rem;
-    color: white;
-    border: none;
-    padding: 0.5rem;
+  width: 50%;
+  height: 2.75rem;
+  margin: 10px;
+  background-color: rgb(43, 44, 52);
+  border-radius: 0.5rem;
+  color: white;
+  border: none;
+  padding: 0.5rem;
 }
-
 .message-box-button {
-    width: 10%;
-    height: 2.75rem;
-    background-color: rgb(93,97,237);
-    border-radius: 0.5rem;
-    color: white;
-    border: none;
+  width: 10%;
+  height: 2.75rem;
+  background-color: rgb(93, 97, 237);
+  border-radius: 0.5rem;
+  color: white;
+  border: none;
 }
-
 .message-from-user {
-    padding: 0.5rem 2rem;
-    width: 50%;
-    
-    
-    margin-left: 50%;
+  padding: 0.5rem 2rem;
+  width: 50%;
+  margin-left: 50%;
 }
-
-    .message-from-user .message-text {
-        background-color: rgb(93,97,237);
-    }
-
+.message-from-user .message-text {
+  background-color: rgb(93, 97, 237);
+}
 .message-from-other-user {
-    padding: 0.5rem 2rem;
-    width: 50%;
-
+  padding: 0.5rem 2rem;
+  width: 50%;
 }
-
 .message-bubble {
-    
 }
-
 .message-sender {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin: 0rem 0rem 0rem 1rem;
-    
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0rem 0rem 0rem 1rem;
 }
-
 .message-text {
-    background-color: rgb(36,37,45);
-    border-radius: 1.75rem;
-    padding: 1rem;
-    font-size: 1rem;
-
+  background-color: rgb(36, 37, 45);
+  border-radius: 1.75rem;
+  padding: 1rem;
+  font-size: 1rem;
 }
-
 .message-date {
-    font-size: .75rem;
-    color: slategray;
-    text-align: end;
-    margin: -0.25rem;
-    margin-right: 1.5rem;
+  font-size: 0.75rem;
+  color: slategray;
+  text-align: end;
+  margin: -0.25rem;
+  margin-right: 1.5rem;
 }
-
-
-
-
 .sidebar-column a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
-
 .sidebar-title {
-
 }
-
 .user-search-bar {
-    margin: 3rem 0rem 0rem 0.25rem;
-    background-color: rgb(43,44,52);
-    height: 2rem;
-    width: 80%;
-    border-radius: 0.5rem;
-    color: white;
-    border: none;
-    padding: 0.5rem;
+  margin: 3rem 0rem 0rem 0.25rem;
+  background-color: rgb(43, 44, 52);
+  height: 2rem;
+  width: 80%;
+  border-radius: 0.5rem;
+  color: white;
+  border: none;
+  padding: 0.5rem;
 }
-
 .user button {
-    width: 80%;
-    background-color: transparent;
-    color: white;
-    font-size: 1rem;
-    margin: 0.25rem;
-    padding: 0.25rem;
-    border-width: 0px;
-    border-radius: 0.25rem;
+  width: 80%;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  border-width: 0px;
+  border-radius: 0.25rem;
 }
-
 .conversation-user button {
-    width: 80%;
-    background-color: transparent;
-    color: white;
-    font-size: 1rem;
-    margin: 0.25rem;
-    padding: 0.25rem;
-    border-width: 1px;
-    border-color: rgb(93,97,237);
-    border-radius: 0.25rem;
+  width: 80%;
+  background-color: transparent;
+  color: white;
+  font-size: 1rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  border-width: 1px;
+  border-color: rgb(93, 97, 237);
+  border-radius: 0.25rem;
 }
-
 .active-status {
-    height: 0.5rem;
-    width: 0.5rem;
-    background-color: rgb(93,97,237);
-    border-radius: 50%;
-    display: inline-block;
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: rgb(93, 97, 237);
+  border-radius: 50%;
+  display: inline-block;
 }
-
 .user button:hover {
-    background-color: rgb(93,97,237);
+  background-color: rgb(93, 97, 237);
 }
-
 .user button:active {
-    background-color: rgb(93,97,237);
+  background-color: rgb(93, 97, 237);
 }
-
-
-
-
-
-/*make login css conform to above style patterns*/
-
-
 .login-register-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    width: 100%;
-    padding: 5%;
-    background-color: rgb(28, 28, 37);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+  padding: 5%;
+  background-color: rgb(28, 28, 37);
 }
-
-    .login-register-form h1 {
-        margin-bottom: 5%;
-        color: white;
-    }
-
-    .login-register-form label {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 10px;
-        text-align: left;
-        font-weight: bold;
-        font-size: 1rem;
-        color: white;
-    }
-
-    .login-register-form input[type="text"],
-    .login-register-form input[type="password"] {
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        border: none;
-        background-color: rgb(36, 37, 45);
-        color: white;
-        font-size: 16px;
-    }
-
-    .login-register-form input[type="submit"] {
-        background-color: rgb(93, 97, 237);
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-bottom: 10px;
-    }
-
-    .login-register-form a {
-        color: rgb(93, 97, 237);
-        text-decoration: none;
-    }
-
-        .login-register-form input[type="submit"]:hover,
-        .login-register-form a:hover {
-            opacity: 0.8;
-        }
-
-    .login-register-form input[type="text"]:focus,
-    .login-register-form input[type="password"]:focus {
-        outline: none;
-        box-shadow: 0px 0px 5px rgba(93, 97, 237, 0.5);
-        background-color: rgb(43, 44, 52);
-    }
+.login-register-form h1 {
+  margin-bottom: 5%;
+  color: white;
+}
+.login-register-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+}
+.login-register-form input[type="text"],
+.login-register-form input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(36, 37, 45);
+  color: white;
+  font-size: 16px;
+}
+.login-register-form input[type="submit"] {
+  background-color: rgb(93, 97, 237);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.login-register-form a {
+  color: rgb(93, 97, 237);
+  text-decoration: none;
+}
+.login-register-form input[type="submit"]:hover,
+.login-register-form a:hover {
+  opacity: 0.8;
+}
+.login-register-form input[type="text"]:focus,
+.login-register-form input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(93, 97, 237, 0.5);
+  background-color: rgb(43, 44, 52);
+}

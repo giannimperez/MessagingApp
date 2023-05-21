@@ -1,12 +1,11 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState } from "react";
 
 function Navbar() {
-
-
     return (
-
         <nav className="nav">
-            <a href="/" className="site-title">Messaging App</a>
+            <a href="/" className="site-title">
+                Messaging App
+            </a>
             <ul>
                 <li>
                     <a href="/">About</a>
@@ -20,10 +19,18 @@ function Navbar() {
                     </>
                 ) : null}
             </ul>
-            <a href={localStorage.getItem("user-info") &&
-                window.location.pathname !== "/login" ? "/login" : "/"}>
+            <a
+                href={
+                    localStorage.getItem("user-info") &&
+                        window.location.pathname !== "/login"
+                        ? "/login"
+                        : "/"
+                }
+            >
                 {localStorage.getItem("user-info") &&
-                    window.location.pathname !== "/login" ? "Logout" : "Login"}
+                    window.location.pathname !== "/login"
+                    ? "Logout"
+                    : "Login"}
             </a>
         </nav>
     );
