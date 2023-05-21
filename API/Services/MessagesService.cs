@@ -23,6 +23,16 @@ namespace API.Services
         /// <inheritdoc/>
         public async Task<ActionResult<Message>> PostMessage(string sender, string recipient, string text)
         {
+            var recipientUser = await _context.Users.SingleOrDefaultAsync(x => x.UserName == recipient);
+
+            // validate recipient exists
+            if (recipientUser == null)
+                throw new CustomException(400, "Recipient does not exist");
+
+            // validate recipient is not sender
+            if (recipientUser.UserName == sender)
+                throw new CustomException(400, "Cannot send messages to self");
+
             Message message = new Message
             {
                 Sender = sender,
