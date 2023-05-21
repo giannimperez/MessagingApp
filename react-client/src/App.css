@@ -182,6 +182,11 @@ body {
   margin: -0.25rem;
   margin-right: 1.5rem;
 }
+.sidebar {
+    overflow-y: auto;
+    height: 100%;
+    padding-bottom: 20%;
+}
 .sidebar-column a {
   color: inherit;
   text-decoration: none;
@@ -231,6 +236,23 @@ body {
 }
 .user button:active {
   background-color: rgb(93, 97, 237);
+}
+/* For Firefox */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(50, 50, 65) rgb(50, 50, 65);
+}
+/* For Chrome, Edge, and Safari */
+.sidebar::-webkit-scrollbar {
+  width: 12px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: rgb(50, 50, 65);
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgb(28, 28, 37);
+  border-radius: 20px;
+  border: 3px solid rgb(28, 28, 37);
 }
 .login-register-form {
   display: flex;
