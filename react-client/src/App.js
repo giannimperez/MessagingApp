@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from './components/Navbar';
-import Login from './components/Login';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import AboutPage from './pages/AboutPage';
 import MessagesPage from './pages/MessagesPage';
 import './App.css';
 
@@ -13,13 +13,16 @@ function App() {
     
     switch (window.location.pathname) {
         case "/":
-            Component = MessagesPage;
+            return window.location.href = "/messages"; // direct to messages page
             break;
         case "/register":
             Component = RegisterPage;
             break;
         case "/login":
             Component = LoginPage;
+            break;
+        case "/about":
+            Component = AboutPage;
             break;
         case "/messages":
             Component = MessagesPage;

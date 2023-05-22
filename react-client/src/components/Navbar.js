@@ -1,39 +1,56 @@
 ﻿import React, { useState } from "react";
 
 function Navbar() {
-    return (
-        <nav className="nav">
-            <a href="/" className="site-title">
-                Messaging App
-            </a>
-            <ul>
-                <li>
-                    <a href="/">About</a>
-                </li>
-                {localStorage.getItem("user-info") &&
-                    window.location.pathname !== "/login" ? (
-                    <>
-                        <li>
-                            <a href="/messages">Messages</a>
-                        </li>
-                    </>
-                ) : null}
-            </ul>
-            <a
-                href={
-                    localStorage.getItem("user-info") &&
-                        window.location.pathname !== "/login"
-                        ? "/login"
-                        : "/"
-                }
-            >
-                {localStorage.getItem("user-info") &&
-                    window.location.pathname !== "/login"
-                    ? "Logout"
-                    : "Login"}
-            </a>
-        </nav>
-    );
+
+    const user = localStorage.getItem("user-info");
+
+    // clear user data if on login or register page
+    if (window.location.pathname === "/login" || window.location.pathname === "/register") {
+        localStorage.clear();
+    }
+    
+    // if on messages page and not logged in,
+    // send back to login page
+    if (window.location.pathname === "/messages" && !user) {
+        return window.location.href = "/login";
+    }
+
+    // show "not logged in" navbar
+    if (!user) {
+        return (
+            <nav className="nav">
+                <a href="/" className="site-title">
+                    Messaging App
+                </a>
+                <ul>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+                <a href="/login">Login</a>
+            </nav>
+        );
+    }
+
+    // show "logged in" navbar
+    if (user) {
+        return (
+            <nav className="nav">
+                <a href="/" className="site-title">
+                    Messaging App
+                </a>
+                <ul>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/messages">Messages</a>
+                    </li>
+                </ul>
+                <a href="/login">Logout</a>
+            </nav>
+        );
+    }
 }
 
 export default Navbar;
