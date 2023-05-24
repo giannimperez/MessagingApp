@@ -29,7 +29,7 @@ namespace API.Services
             if (await UserExists(registerDto.Username))
                 throw new CustomException(400, "Username already taken");
 
-            await CheckAge(registerDto.DateOfBirth);
+            CheckAge(registerDto.DateOfBirth);
 
             var user = new User
             {
@@ -81,7 +81,7 @@ namespace API.Services
         }
 
 
-        private async Task<int> CheckAge(DateTime dateOfBirth)
+        private int CheckAge(DateTime dateOfBirth)
         {
             var currentDate = DateTime.Today;
             var age = currentDate.Year - dateOfBirth.Year;
