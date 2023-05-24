@@ -83,31 +83,18 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{username}/conversationlist")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
-        {
-            try
-            {
-                return await _usersService.GetUsersWithConversations(username);
-            }
-            catch (CustomException ex)
-            {
-                return StatusCode(ex.StatusCode, ex.MessageJson);
-            }
-        }
-
-
         /// <summary>
-        /// Retrieves a users age by Id.
+        /// Retrieves a list of users that have open conversation with requesting user.
         /// </summary>
-        /// <param name="id">Id of the user.</param>
-        /// <returns>Age of the user.</returns>
-        [HttpGet("age/{id}")]
-        public async Task<ActionResult<int>> GetUserAgeById(int id)
+        /// <returns>List of users who have messages with the requesting user.</returns>
+        [HttpGet("conversationlist")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations()
         {
             try
             {
-                return await _usersService.GetUserAgeById(id);
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+
+                return await _usersService.GetUsersWithConversations(requestingUser);
             }
             catch (CustomException ex)
             {

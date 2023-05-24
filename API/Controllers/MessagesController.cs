@@ -48,6 +48,12 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a list of messages between two users ordered by CreateDate descending.
+        /// </summary>
+        /// <param name="otherUser">Other user in conversation.</param>
+        /// <param name="range">Number of messages to return.</param>
+        /// <returns>List of messages between two users.</returns>
         [HttpGet("{otherUser}/{range}/conversation")]
         public async Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string otherUser, int range)
         {
@@ -63,6 +69,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a user by id.
+        /// </summary>
+        /// <param name="id">Id of user to delete.</param>
+        /// <returns>True if message deleted; otherwise, false.</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteMessage(int id)
         {

@@ -44,13 +44,6 @@ namespace API.Interfaces
         Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username);
 
         /// <summary>
-        /// Retrieves a users age by Id.
-        /// </summary>
-        /// <param name="id">Id of the user.</param>
-        /// <returns>Age of the user.</returns>
-        Task<ActionResult<int>> GetUserAgeById(int id);
-
-        /// <summary>
         /// Deletes a user by Id.
         /// </summary>
         /// <param name="id">Id of user to delete.</param>

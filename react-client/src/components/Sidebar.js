@@ -16,7 +16,7 @@ function Sidebar() {
     async function getConversationList() {
         try {
             const response = await fetch(
-                `https://localhost:5001/api/users/${userInfo.username}/conversationlist`,
+                `https://localhost:5001/api/users/conversationlist`,
                 {
                     method: "GET",
                     headers: {

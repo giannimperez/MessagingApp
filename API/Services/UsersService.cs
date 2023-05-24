@@ -119,13 +119,6 @@ namespace API.Services
         }
 
         /// <inheritdoc></inheritdoc>
-        public async Task<ActionResult<int>> GetUserAgeById(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            return user.GetAge();
-        }
-
-        /// <inheritdoc></inheritdoc>
         public async Task<ActionResult<string>> DeleteUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);
