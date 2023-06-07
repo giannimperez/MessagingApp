@@ -42,6 +42,9 @@ namespace API.Services
             if (recipientUser.UserName == sender)
                 throw new CustomException(400, "Cannot send messages to self");
 
+            // strip new lines
+            text = text.Replace("\n", " ").Replace("\r", " ");
+
             Message message = new Message
             {
                 Sender = sender,
@@ -108,12 +111,12 @@ namespace API.Services
             // send messages to OpenAiAPI
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("authorization", "Bearer " + _openAiApiKey);
-            var content = new StringContent("{\"model\": \"text-davinci-001\", \"prompt\":\""+ prompt +"\",\"temperature\": 1,\"max_tokens\": 100}",
+            var content = new StringContent("{\"model\": \"text-davinci-001\", \"prompt\":\"" + prompt + "\",\"temperature\": 1,\"max_tokens\": 100}",
                 Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("https://api.openai.com/v1/completions", content);
 
             if (!response.IsSuccessStatusCode)
-                throw new CustomException(500, "Error retrieving ai message suggestion: " + response.ReasonPhrase);
+                throw new Exception("Error retrieving ai message suggestion: " + response.ReasonPhrase);
 
             // get message from response
             var responseString = await response.Content.ReadAsStringAsync();
