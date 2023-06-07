@@ -28,14 +28,29 @@ function MessageBox() {
     const handleSubmit = (event) => {
         event.preventDefault(); // prevents rerenders from cancelling POST request
 
-        if (text === "") {
-            return;
-        }
-
         sendMessage();
 
         setText(""); // reset textbox
     };
+
+    // request ai message suggestion
+    async function getAiMessageSuggestion() {
+        try {
+            const response = await fetch(
+                `https://localhost:5001/api/messages/${otherUser}/aisuggestmessage`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: "Bearer " + userInfo.token,
+                    },
+                }
+            );
+            const responseData = await response.json();
+            setText(responseData.AiMessageSuggestion);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     // select textbox on render
     const inputRef = useRef(null);
@@ -43,16 +58,32 @@ function MessageBox() {
         inputRef.current.select(); // select textbox
     }, []);
 
+    // if enter pressed, submit form
+    const checkEnterPressed = (e) => {
+        try {
+            if (e.keyCode == 13 && e.shiftKey == false) {
+                e.preventDefault();
+                handleSubmit(e);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="message-box">
-            <form onSubmit={handleSubmit}>
-                <input
+            <button className="message-box-ai-suggestion-button" onClick={getAiMessageSuggestion}>
+                <img src="./AiIcon.png" alt="AI"/>
+            </button>
+            <form onSubmit={handleSubmit} onKeyDown={checkEnterPressed}>
+                <textarea
                     ref={inputRef}
                     className="message-box-entry"
                     type="text"
                     value={text}
                     placeholder="Write a message"
                     onChange={(event) => setText(event.target.value)}
+                    required
                 />
                 <input className="message-box-button" type="submit" value="Send" />
             </form>

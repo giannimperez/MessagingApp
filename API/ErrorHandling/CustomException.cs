@@ -4,13 +4,12 @@ namespace API.ErrorHandling
 {
     public class CustomException : Exception
     {
-
         public int StatusCode { get; set; }
         public override string Message { get; }
         public string MessageJson { get; set; }
         public override string StackTrace { get; }
 
-        public CustomException(int statusCode, string message) // change statusCode type to HttpStatusCode
+        public CustomException(int statusCode, string message)
             : base(message)
         {
             StatusCode = statusCode;
@@ -18,7 +17,7 @@ namespace API.ErrorHandling
             MessageJson = $"{{\"Message\":\"{Message}\"}}";
         }
 
-        public CustomException(int statusCode, string message = null, string innerException = null) // This is not right
+        public CustomException(int statusCode, string message = null, string innerException = null)
             : base(message)
         {
             StatusCode = statusCode;

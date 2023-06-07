@@ -21,7 +21,8 @@ namespace API.Controllers
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="usersService">UserService interface.</param>
+        /// <param name="tokenService">TokenService interface.</param>
         public UsersController(IUsersService usersService, ITokenService tokenService)
         {
             _usersService = usersService;

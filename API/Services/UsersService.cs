@@ -20,13 +20,13 @@ namespace API.Services
             _context = context;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<User>> GetUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -37,7 +37,7 @@ namespace API.Services
             return user;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<MemberDto>> GetUserByUsername(string username)
         {
             var user = await _context.Users.Where(u => u.UserName == username).SingleOrDefaultAsync();
@@ -55,7 +55,7 @@ namespace API.Services
             return memberDto;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string requestingUser, string username)
         {
             List<User> users = new List<User>();
@@ -88,7 +88,7 @@ namespace API.Services
             return returnUsers;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
         {
             var users = await _context.Messages
@@ -118,7 +118,7 @@ namespace API.Services
             return returnUsers;
         }
 
-        /// <inheritdoc></inheritdoc>
+        /// <inheritdoc/>
         public async Task<ActionResult<string>> DeleteUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);

@@ -21,7 +21,8 @@ namespace API.Controllers
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="messagesService">MessagesService interface.</param>
+        /// <param name="tokenService">TokenService interface.</param>
         public MessagesController(IMessagesService messagesService, ITokenService tokenService)
         {
             _messagesService = messagesService;
@@ -62,6 +63,26 @@ namespace API.Controllers
                 var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
                 return await _messagesService.GetConversationBetweenUsers(requestingUser, otherUser, range);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.MessageJson);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a message suggestion from OpenAiAPI for an existing conversation.
+        /// </summary>
+        /// <param name="otherUser">Other user in conversation.</param>
+        /// <returns>A message suggestion from OpenAiAPI, from the requestingUser's perspective.</returns>
+        [HttpGet("{otherUser}/aisuggestmessage")]
+        public async Task<ActionResult<string>> GetAiMessageSuggestion(string otherUser)
+        {
+            try
+            {
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+
+                return await _messagesService.GetAiMessageSuggestion(requestingUser, otherUser);
             }
             catch (CustomException ex)
             {

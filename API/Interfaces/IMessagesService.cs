@@ -50,6 +50,14 @@ namespace API.Interfaces
         Task<ActionResult<IEnumerable<Message>>> GetConversationBetweenUsers(string user1, string user2, int range);
 
         /// <summary>
+        /// Retrieves a message suggestion from OpenAiAPI for an existing conversation.
+        /// </summary>
+        /// <param name="requestingUser">User who is requesting the message suggestion.</param>
+        /// <param name="otherUser">Other user in conversation.</param>
+        /// <returns>A message suggestion from OpenAiAPI, from the requestingUser's perspective.</returns>
+        Task<ActionResult<string>> GetAiMessageSuggestion(string requestingUser, string otherUser);
+
+        /// <summary>
         /// Deletes message by id.
         /// </summary>
         /// <param name="id">Id of message to delete.</param>

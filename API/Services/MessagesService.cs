@@ -1,12 +1,17 @@
 ﻿using API.Data;
-using API.DTOs;
 using API.ErrorHandling;
 using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace API.Services
@@ -14,10 +19,14 @@ namespace API.Services
     public class MessagesService : IMessagesService
     {
         private DataContext _context;
+        private readonly IConfiguration _config;
+        private readonly string _openAiApiKey;
 
-        public MessagesService(DataContext context)
+        public MessagesService(DataContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
+            _openAiApiKey = _config["OpenAiApiKey"];
         }
 
         /// <inheritdoc/>
@@ -90,6 +99,36 @@ namespace API.Services
         }
 
         /// <inheritdoc/>
+        public async Task<ActionResult<string>> GetAiMessageSuggestion(string requestingUser, string otherUser)
+        {
+            // generate ai message prompt
+            var promptActionResult = await GetAiMessagePrompt(requestingUser, otherUser);
+            var prompt = promptActionResult.Value;
+
+            // send messages to OpenAiAPI
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("authorization", "Bearer " + _openAiApiKey);
+            var content = new StringContent("{\"model\": \"text-davinci-001\", \"prompt\":\""+ prompt +"\",\"temperature\": 1,\"max_tokens\": 100}",
+                Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync("https://api.openai.com/v1/completions", content);
+
+            if (!response.IsSuccessStatusCode)
+                throw new CustomException(500, "Error retrieving ai message suggestion: " + response.ReasonPhrase);
+
+            // get message from response
+            var responseString = await response.Content.ReadAsStringAsync();
+            var dynamicText = JsonConvert.DeserializeObject<dynamic>(responseString).choices[0].text;
+            var messageSuggestion = dynamicText.ToString();
+
+            // strip requestingUser from response. OpenAiAPi consistently starts message with "{requestingUser}:"
+            messageSuggestion = messageSuggestion.Replace($"{requestingUser}:", string.Empty).Trim();
+            messageSuggestion = messageSuggestion.Replace("\n", " ").Replace("\r", " ");
+            var messageSuggestionJson = $"{{\"AiMessageSuggestion\":\"{messageSuggestion}\"}}";
+
+            return messageSuggestionJson;
+        }
+
+        /// <inheritdoc/>
         public async Task<ActionResult<bool>> DeleteMessage(int id)
         {
             var message = await _context.Messages.FindAsync(id);
@@ -101,6 +140,23 @@ namespace API.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<ActionResult<string>> GetAiMessagePrompt(string requestingUser, string otherUser)
+        {
+            // get conversation
+            var conversationActionResult = await GetConversationBetweenUsers(requestingUser, otherUser, 10);
+            List<Message> conversation = conversationActionResult.Value.ToList();
+
+            // create prompt
+            var prompt = $"Suggest the next message from {requestingUser}. Output should not include introduction or explanation.";
+            foreach (Message message in conversation)
+            {
+                var strippedMessage = $" {message.Sender}: {message.Text},"; // stripping minimizes OpenAiAPI token usage
+                prompt = prompt + strippedMessage; // append prompt with message
+            }
+
+            return prompt;
         }
     }
 }

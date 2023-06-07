@@ -15,7 +15,7 @@ namespace API.Controllers
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="accountsService"></param>
+        /// <param name="accountsService">AccountService interface.</param>
         public AccountsController(IAccountsService accountsService)
         {
             _accountsService = accountsService;
