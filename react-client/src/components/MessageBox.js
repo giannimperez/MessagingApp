@@ -1,4 +1,6 @@
 ﻿import React, { useState, useEffect, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MessageBox() {
     // users in conversation
@@ -19,6 +21,16 @@ function MessageBox() {
                 },
                 body: JSON.stringify({ recipient: otherUser, text: text }),
             });
+
+            // Handle bad API response
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData.Message;
+
+                toast.error(errorMessage); // display error modal
+                throw new Error(errorMessage);
+            }
+
         } catch (error) {
             console.error(error);
         }
@@ -45,6 +57,16 @@ function MessageBox() {
                     },
                 }
             );
+
+            // Handle bad API response
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData.Message;
+
+                toast.error(errorMessage); // display error modal
+                throw new Error(errorMessage);
+            }
+
             const responseData = await response.json();
             setText(responseData.AiMessageSuggestion);
         } catch (error) {
@@ -86,6 +108,18 @@ function MessageBox() {
                     required
                 />
                 <input className="message-box-button" type="submit" value="Send" />
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={3000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable={false}
+                    pauseOnHover={true}
+                    theme="colored"
+                />
             </form>
         </div>
     );

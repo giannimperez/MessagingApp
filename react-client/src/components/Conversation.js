@@ -1,4 +1,6 @@
 ﻿import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Conversation() {
     // users in conversation
@@ -31,6 +33,15 @@ function Conversation() {
                     },
                 }
             );
+
+            // Handle bad API response
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData.Message;
+
+                toast.error(errorMessage); // display error modal
+                throw new Error(errorMessage);
+            }
 
             setMessageList(await response.json());
         } catch (error) {
@@ -99,6 +110,18 @@ function Conversation() {
                     })
                     : ""
             }
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={true}
+                theme="colored"
+            />
         </div>
     );
 }

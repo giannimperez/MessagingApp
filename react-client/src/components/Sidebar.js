@@ -1,4 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Sidebar() {
     // users in conversation
@@ -25,6 +27,15 @@ function Sidebar() {
                 }
             );
 
+            // Handle bad API response
+            if (!response.ok) {
+                const errorData = await response.json();
+                const errorMessage = errorData.Message;
+
+                toast.error(errorMessage); // display error modal
+                throw new Error(errorMessage);
+            }
+
             setConvoUsers(await response.json());
         } catch (error) {
             console.error(error);
@@ -44,6 +55,15 @@ function Sidebar() {
                         },
                     }
                 );
+
+                // Handle bad API response
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    const errorMessage = errorData.Message;
+
+                    toast.error(errorMessage); // display error modal
+                    throw new Error(errorMessage);
+                }
 
                 setUsers(await response.json());
             }
@@ -134,6 +154,18 @@ function Sidebar() {
                     })
                     : ""
             }
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={true}
+                theme="colored"
+            />
         </nav>
     );
 }
