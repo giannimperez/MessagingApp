@@ -29,6 +29,9 @@ namespace API.Services
             if (await UserExists(registerDto.Username))
                 throw new CustomException(400, "Username already taken");
 
+            if (registerDto.Password.Length < 4 || registerDto.Password.Length > 30)
+                throw new CustomException(400, "Password must be between 4 and 30 characters");
+
             CheckAge(registerDto.DateOfBirth);
 
             var user = new User

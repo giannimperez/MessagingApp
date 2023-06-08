@@ -35,7 +35,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.MessageJson);
+                return StatusCode(ex.StatusCode, ex.ToJson());
             }
         }
 
@@ -53,7 +53,7 @@ namespace API.Controllers
             }
             catch (CustomException ex)
             {
-                return StatusCode(ex.StatusCode, ex.MessageJson);
+                return StatusCode(ex.StatusCode, ex.ToJson());
             }
         }
     }

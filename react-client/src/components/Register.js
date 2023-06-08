@@ -30,7 +30,7 @@ function Register() {
                 // Handle bad API response
                 if (!response.ok) {
                     const errorData = await response.json();
-                    const errorMessage = errorData.Message;
+                    const errorMessage = errorData.error;
 
                     toast.error(errorMessage); // display error modal
                     throw new Error(errorMessage);

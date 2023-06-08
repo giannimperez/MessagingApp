@@ -27,7 +27,8 @@ namespace API.ErrorHandling
                 var errorGuid = Guid.NewGuid();
                 Log.Error($"Error Guid: {errorGuid} \n{ex}");
   
-                await context.Response.WriteAsync(new CustomException(context.Response.StatusCode, $"Internal server error: {errorGuid}").MessageJson);
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(new CustomException(context.Response.StatusCode, $"Internal server error: {errorGuid}").MessageFormatted);
             }
         }
     }
