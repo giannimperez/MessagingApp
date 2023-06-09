@@ -13,7 +13,7 @@ namespace API.ErrorHandling
         {
             StatusCode = statusCode;
             Message = message;
-            MessageFormatted = $"{{\"error\":\"{Message}\"}}";
+            MessageFormatted = $"{{\"error\": \"{Message}\"}}";
         }
 
         /// <summary>

@@ -124,7 +124,7 @@ namespace API.Services
             var messageSuggestion = dynamicText.ToString();
 
             // strip requestingUser from response. OpenAiAPi consistently starts message with "{requestingUser}:"
-            messageSuggestion = messageSuggestion.Replace($"{requestingUser}:", string.Empty).Trim();
+            messageSuggestion = messageSuggestion.Replace($"{requestingUser}:", "").Trim();
             messageSuggestion = messageSuggestion.Replace("\n", " ").Replace("\r", " ");
             var messageSuggestionJson = $"{{\"AiMessageSuggestion\":\"{messageSuggestion}\"}}";
 
@@ -152,7 +152,7 @@ namespace API.Services
             List<Message> conversation = conversationActionResult.Value.ToList();
 
             // create prompt
-            var prompt = $"Suggest the next message from {requestingUser}. Output should not include introduction or explanation.";
+            var prompt = $"You are {requestingUser}. Respond to the last message using the context of the entire conversation.";
             foreach (Message message in conversation)
             {
                 var strippedMessage = $" {message.Sender}: {message.Text},"; // stripping minimizes OpenAiAPI token usage
