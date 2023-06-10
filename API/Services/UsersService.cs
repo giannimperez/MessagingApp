@@ -102,7 +102,7 @@ namespace API.Services
 
             foreach (var user in users)
             {
-                // Doesn't include user provided in argument
+                // doesn't include user provided in argument
                 if (user.UserName != username) 
                 {
                     MemberDto memberDto = new MemberDto
@@ -119,13 +119,24 @@ namespace API.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ActionResult<string>> DeleteUserById(int id)
+        public async Task<ActionResult<string>> DeleteUserById(string requestingUser, int id)
         {
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
                 throw new CustomException(400, "User not found");
 
+            if (requestingUser != "Admin")
+                throw new CustomException(400, "Only Admin can delete user");
+
+            // delete messages to and from user
+            List<Message> messages = await _context.Messages.Where(m => m.Sender == user.UserName).ToListAsync();
+            messages.AddRange(await _context.Messages.Where(m => m.Recipient == user.UserName).ToListAsync());
+
+            foreach(var message in messages)
+                _context.Messages.Remove(message);
+
+            // delete user
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 

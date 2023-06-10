@@ -46,8 +46,9 @@ namespace API.Interfaces
         /// <summary>
         /// Deletes a user by Id.
         /// </summary>
+        /// <param name="requestingUser">Username of user requesting delete.</param>
         /// <param name="id">Id of user to delete.</param>
         /// <returns>Message reporting deletion success.</returns>
-        Task<ActionResult<string>> DeleteUserById(int id);
+        Task<ActionResult<string>> DeleteUserById(string requestingUser, int id);
     }
 }

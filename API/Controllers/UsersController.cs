@@ -113,7 +113,9 @@ namespace API.Controllers
         {
             try
             {
-                return await _usersService.DeleteUserById(id);
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+
+                return await _usersService.DeleteUserById(requestingUser, id);
             }
             catch (CustomException ex)
             {

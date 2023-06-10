@@ -32,7 +32,12 @@ namespace API.Services
         /// <inheritdoc/>
         public async Task<ActionResult<Message>> PostMessage(string sender, string recipient, string text)
         {
+            var senderUser = await _context.Users.SingleOrDefaultAsync(x => x.UserName == sender);
             var recipientUser = await _context.Users.SingleOrDefaultAsync(x => x.UserName == recipient);
+
+            // validate sender exists
+            if (senderUser == null)
+                throw new CustomException(400, "Sender does not exist");
 
             // validate recipient exists
             if (recipientUser == null)
