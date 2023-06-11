@@ -60,8 +60,9 @@ namespace API.Interfaces
         /// <summary>
         /// Deletes message by id.
         /// </summary>
+        /// <param name="requestingUser">Username of user requesting delete.</param>
         /// <param name="id">Id of message to delete.</param>
         /// <returns>True if message deleted; otherwise, false.</returns>
-        Task<ActionResult<bool>> DeleteMessage(int id);
+        Task<ActionResult<bool>> DeleteMessage(string requestingUser, int id);
     }
 }

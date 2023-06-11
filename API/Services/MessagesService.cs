@@ -137,8 +137,11 @@ namespace API.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ActionResult<bool>> DeleteMessage(int id)
+        public async Task<ActionResult<bool>> DeleteMessage(string requestingUser, int id)
         {
+            if (requestingUser != "Admin")
+                throw new CustomException(400, "Only Admin can delete messages");
+
             var message = await _context.Messages.FindAsync(id);
 
             if (message == null)

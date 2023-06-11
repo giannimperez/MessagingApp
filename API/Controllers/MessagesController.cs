@@ -100,7 +100,9 @@ namespace API.Controllers
         {
             try
             {
-                return await _messagesService.DeleteMessage(id);
+                var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
+
+                return await _messagesService.DeleteMessage(requestingUser, id);
             }
             catch (CustomException ex)
             {
