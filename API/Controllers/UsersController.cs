@@ -70,13 +70,13 @@ namespace API.Controllers
         /// <param name="partialUsername">Partial username to search for.</param>
         /// <returns>List of users containing the partial username.</returns>
         [HttpGet("partialusername/{partialUsername}")]
-        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string partialUsername)
+        public async Task<ActionResult<List<MemberDto>>> GetUsersByPartialUsername(string partialUsername)
         {
             try
             {
                 var requestingUser = await _tokenService.GetUsernameFromAuthHeader(HttpContext.Request.Headers["Authorization"]);
 
-                return await _usersService.GetUserListByUsername(requestingUser, partialUsername);
+                return await _usersService.GetUsersByPartialUsername(requestingUser, partialUsername);
             }
             catch (CustomException ex)
             {

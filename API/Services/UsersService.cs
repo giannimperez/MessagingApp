@@ -56,18 +56,10 @@ namespace API.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string requestingUser, string username)
+        public async Task<ActionResult<List<MemberDto>>> GetUsersByPartialUsername(string requestingUser, string partialUsername)
         {
             List<User> users = new List<User>();
-
-            if (username == "") // TODO: Fix this for partial route
-            {
-                users = await _context.Users.ToListAsync();
-            }
-            else
-            {
-                users = await _context.Users.Where(u => u.UserName.ToLower().Contains(username.ToLower())).ToListAsync();
-            }
+            users = await _context.Users.Where(u => u.UserName.ToLower().Contains(partialUsername.ToLower())).ToListAsync();
 
             List<MemberDto> returnUsers = new List<MemberDto>();
 

@@ -34,7 +34,7 @@ namespace API.Interfaces
         /// <param name="requestingUser">Username of user requesting list.</param>
         /// <param name="partialUsername">Partial username to search for.</param>
         /// <returns>List of users containing the partial username excluding the requesting user.</returns>
-        Task<ActionResult<List<MemberDto>>> GetUserListByUsername(string requestingUser, string partialUsername);
+        Task<ActionResult<List<MemberDto>>> GetUsersByPartialUsername(string requestingUser, string partialUsername);
 
         /// <summary>
         /// Retrieves all users who have at least one message with the specified user.
