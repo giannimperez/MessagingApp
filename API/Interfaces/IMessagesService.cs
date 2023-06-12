@@ -1,5 +1,4 @@
-﻿using API.DTOs;
-using API.Models;
+﻿using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
