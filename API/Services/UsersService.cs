@@ -59,7 +59,7 @@ namespace API.Services
         public async Task<ActionResult<List<MemberDto>>> GetUsersByPartialUsername(string requestingUser, string partialUsername)
         {
             List<User> users = new List<User>();
-            users = await _context.Users.Where(u => u.UserName.ToLower().Contains(partialUsername.ToLower())).ToListAsync();
+            users = await _context.Users.Where(u => u.UserName.ToLower().Contains(partialUsername.ToLower())).Take(10).ToListAsync();
 
             List<MemberDto> returnUsers = new List<MemberDto>();
 
