@@ -7,13 +7,9 @@ function Conversation() {
     const userInfo = JSON.parse(localStorage.getItem("user-info"));
     let otherUser = JSON.parse(localStorage.getItem("current-conversation-user"));
 
-    // default amount of messages to display
+    // messages in conversation
     const defaultMessageRange = 20;
-
-    // list of messages in conversation
     let [messageList, setMessageList] = useState([]);
-
-    // number of messages to be displayed
     let [messageRange, setMessageRange] = useState(defaultMessageRange);
 
     // increase message range to load more messages
