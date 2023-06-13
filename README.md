@@ -10,6 +10,7 @@ This is a communication tool that allows users to connect and chat with one anot
     - [Partial Username Search](#partial-username-search)
     - [Realtime Messaging](#realtime-messaging)
     - [AI Message Suggestions](#ai-message-suggestions)
+    - [Toast For Client](#toast-for-client)
 
 ## Setup
 1. Clone project
@@ -31,5 +32,8 @@ This is a communication tool that allows users to connect and chat with one anot
 // gif
 ### AI Message Suggestions
 // gif
+### Toast For Client
+// info and gif
+
 ## Credits
 Developed by Gianni Perez
