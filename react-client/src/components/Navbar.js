@@ -47,7 +47,11 @@ function Navbar() {
                         <a href="/messages">Messages</a>
                     </li>
                 </ul>
-                <a href="/login">Logout</a>
+                <ul>
+                    <li>
+                        <a href="/login">Logout</a>
+                    </li>
+                </ul>
             </nav>
         );
     }
