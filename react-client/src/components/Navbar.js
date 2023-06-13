@@ -27,7 +27,11 @@ function Navbar() {
                         <a href="/about">About</a>
                     </li>
                 </ul>
-                <a href="/login">Login</a>
+                <ul>
+                    <li>
+                        <a href="/login">Login</a>
+                    </li>
+                </ul>
             </nav>
         );
     }
