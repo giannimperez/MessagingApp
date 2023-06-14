@@ -56,6 +56,10 @@ namespace API.Services
                 Text = text
             };
 
+            // update or insert conversation
+            var conversationId = await UpsertConversation(message);
+            message.ConversationId = conversationId.Value;
+
             await _context.Messages.AddAsync(message);
             await _context.SaveChangesAsync();
 
@@ -167,6 +171,34 @@ namespace API.Services
             }
 
             return prompt;
+        }
+
+        private async Task<ActionResult<int>> UpsertConversation(Message message)
+        {
+            ConversationTracker conversation = await _context.ConversationTrackers
+                .SingleOrDefaultAsync(c => 
+                (c.UserA == message.Sender && c.UserB == message.Recipient) ||
+                c.UserB == message.Sender && c.UserA == message.Recipient);
+
+            if (conversation == null)
+            {
+                conversation = new ConversationTracker
+                {
+                    UserA = message.Sender,
+                    UserB = message.Recipient,
+                    MostRecentMessageDate = message.CreateDate
+                };
+                await _context.ConversationTrackers.AddAsync(conversation);
+            }
+            else
+            {
+                conversation.MostRecentMessageDate = message.CreateDate;
+            }
+            
+            await _context.SaveChangesAsync();
+
+            return conversation.Id;
+            
         }
     }
 }

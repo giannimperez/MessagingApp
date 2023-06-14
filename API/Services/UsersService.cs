@@ -81,30 +81,38 @@ namespace API.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string requestingUser)
         {
-            var users = await _context.Messages
-                .Where(m => (m.Sender == username || m.Recipient == username))
-                .Select(m => m.Sender == username ? m.Recipient : m.Sender)
+            var conversations = await _context.ConversationTrackers
+                .Where(c => (c.UserA == requestingUser || c.UserB == requestingUser))
+                .OrderByDescending(c => c.MostRecentMessageDate)
                 .Distinct()
-                .Join(_context.Users, un => un, u => u.UserName, (un, u) => u)
                 .ToListAsync();
+
+            var orderedFlattenedUsernames = conversations
+                .SelectMany(c => new[] { c.UserA, c.UserB })
+                .Where(u => u != requestingUser)
+                .Distinct()
+                .OrderByDescending(u => conversations
+                    .FirstOrDefault(c => c.UserA == u || c.UserB == u).MostRecentMessageDate)
+                .Take(10)
+                .ToList();
 
             List<MemberDto> returnUsers = new List<MemberDto>();
 
-            foreach (var user in users)
+            foreach (var username in orderedFlattenedUsernames)
             {
-                // doesn't include user provided in argument
-                if (user.UserName != username) 
+                var user = await _context.Users
+                    .Where(u => u.UserName == username)
+                    .SingleOrDefaultAsync();
+
+                MemberDto memberDto = new MemberDto
                 {
-                    MemberDto memberDto = new MemberDto
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        IsActive = user.IsActive
-                    };
-                    returnUsers.Add(memberDto);
-                }
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    IsActive = user.IsActive
+                };
+                returnUsers.Add(memberDto);
             }
 
             return returnUsers;
@@ -121,12 +129,17 @@ namespace API.Services
             if (requestingUser != "Admin")
                 throw new CustomException(400, "Only Admin can delete user");
 
-            // delete messages to and from user
-            List<Message> messages = await _context.Messages.Where(m => m.Sender == user.UserName).ToListAsync();
-            messages.AddRange(await _context.Messages.Where(m => m.Recipient == user.UserName).ToListAsync());
+            // delete Messages to and from user
+            var messagesToRemove = await _context.Messages
+                .Where(m => m.Sender == user.UserName || m.Recipient == user.UserName)
+                .ToListAsync();
+            _context.Messages.RemoveRange(messagesToRemove);
 
-            foreach(var message in messages)
-                _context.Messages.Remove(message);
+            // delete ConversationTrackers which include user
+            var conversationTrackersToRemove = await _context.ConversationTrackers
+                .Where(c => c.UserA == user.UserName || c.UserB == user.UserName)
+                .ToListAsync();
+            _context.ConversationTrackers.RemoveRange(conversationTrackersToRemove);
 
             // delete user
             _context.Users.Remove(user);

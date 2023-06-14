@@ -39,9 +39,9 @@ namespace API.Interfaces
         /// <summary>
         /// Retrieves all users who have at least one message with the specified user.
         /// </summary>
-        /// <param name="username">The user which each returned user must have message(s) with.</param>
+        /// <param name="requestingUser">The user which each returned user must have message(s) with.</param>
         /// <returns>List of users who have message(s) with the specified user.</returns>
-        Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string username);
+        Task<ActionResult<IEnumerable<MemberDto>>> GetUsersWithConversations(string requestingUser);
 
         /// <summary>
         /// Deletes a user by Id.

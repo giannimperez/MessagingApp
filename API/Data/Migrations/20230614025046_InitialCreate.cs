@@ -10,6 +10,21 @@ namespace API.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ConversationTrackers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserA = table.Column<string>(type: "TEXT", nullable: true),
+                    UserB = table.Column<string>(type: "TEXT", nullable: true),
+                    MostRecentMessageDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConversationTrackers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
@@ -18,7 +33,8 @@ namespace API.Data.Migrations
                     Sender = table.Column<string>(type: "TEXT", nullable: true),
                     Recipient = table.Column<string>(type: "TEXT", nullable: true),
                     Text = table.Column<string>(type: "TEXT", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ConversationId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,6 +62,9 @@ namespace API.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ConversationTrackers");
+
             migrationBuilder.DropTable(
                 name: "Messages");
 

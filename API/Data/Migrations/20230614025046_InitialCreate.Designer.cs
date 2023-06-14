@@ -11,18 +11,41 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230516122639_RemoveFriendships")]
-    partial class RemoveFriendships
+    [Migration("20230614025046_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
+            modelBuilder.Entity("API.Models.ConversationTracker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("MostRecentMessageDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserA")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserB")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConversationTrackers");
+                });
+
             modelBuilder.Entity("API.Models.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ConversationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreateDate")
