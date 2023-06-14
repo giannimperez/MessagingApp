@@ -41,16 +41,23 @@ This is a communication tool that allows users to connect and chat with one anot
 ![msedge_afa6jC2E41](https://github.com/giannimperez/MessagingApp/assets/36053371/fa2d024c-208b-46ff-a928-09b02c7f2fa3)
 <p align="center">When a 500 occurs, Serilog is used to log the error with it's error guid to provide an easy method of troubleshooting.</p>
 
-## Implementation
+## Documentation
 ### Database Diagram:
 ![image](https://github.com/giannimperez/MessagingApp/assets/36053371/9fe4488f-6d20-4bbf-8092-c3a3cacd3ec4)
 
 ### API Request Flow Chart:
-![Flowchart drawio (2)](https://github.com/giannimperez/MessagingApp/assets/36053371/3fec06d5-5eed-4f09-bd14-41b569729423)
+![Flowchart (5) drawio](https://github.com/giannimperez/MessagingApp/assets/36053371/22d19889-039e-426c-8cb5-c67a6e7526dc)
 
+## Future Improvements
 
+* Use SignalR for push notifications.
+    * Would replace polling for messages
+    * Would allow tracking of user activity (for "IsActive" flag)
 
-## Improvements
+* Track issued tokens with MongoDB.
+    *  Would allow us to invalidate tokens when deleting a user.
+
+* Implement a mechanism that limits OpenAI API requests to avoid extremely high charges.
 
 ## Credits
 Developed by Gianni Perez
