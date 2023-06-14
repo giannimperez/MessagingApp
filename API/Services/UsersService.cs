@@ -121,13 +121,13 @@ namespace API.Services
         /// <inheritdoc/>
         public async Task<ActionResult<string>> DeleteUserById(string requestingUser, int id)
         {
+            if (requestingUser != "Admin")
+                throw new CustomException(400, "Only Admin can delete user");
+
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
                 throw new CustomException(400, "User not found");
-
-            if (requestingUser != "Admin")
-                throw new CustomException(400, "Only Admin can delete user");
 
             // delete Messages to and from user
             var messagesToRemove = await _context.Messages
