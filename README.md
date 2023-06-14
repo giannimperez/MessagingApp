@@ -41,5 +41,16 @@ This is a communication tool that allows users to connect and chat with one anot
 ![msedge_afa6jC2E41](https://github.com/giannimperez/MessagingApp/assets/36053371/fa2d024c-208b-46ff-a928-09b02c7f2fa3)
 <p align="center">When a 500 occurs, Serilog is used to log the error with it's error guid to provide an easy method of troubleshooting.</p>
 
+## Implementation
+### Database Diagram:
+![image](https://github.com/giannimperez/MessagingApp/assets/36053371/9fe4488f-6d20-4bbf-8092-c3a3cacd3ec4)
+
+### API Request Flow Chart:
+![Flowchart drawio (2)](https://github.com/giannimperez/MessagingApp/assets/36053371/3fec06d5-5eed-4f09-bd14-41b569729423)
+
+
+
+## Improvements
+
 ## Credits
 Developed by Gianni Perez
