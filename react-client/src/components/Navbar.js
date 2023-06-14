@@ -24,11 +24,6 @@ function Navbar() {
                 </a>
                 <ul>
                     <li>
-                        <a href="/about">About</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
                         <a href="/login">Login</a>
                     </li>
                 </ul>

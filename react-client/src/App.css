@@ -326,3 +326,14 @@ input:focus {
     color: rgb(93, 97, 237);
     text-decoration: none;
 }
+.about {
+    color: white;
+    padding: 0% 10%;
+}
+.about h3 {
+    padding-top: 3%;
+}
+
+.title {
+    text-align: center;
+}
