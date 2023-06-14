@@ -40,7 +40,7 @@ This is a communication tool that allows users to connect and chat with one anot
 
 #### Toast for 500 responses:
 ![msedge_afa6jC2E41](https://github.com/giannimperez/MessagingApp/assets/36053371/fa2d024c-208b-46ff-a928-09b02c7f2fa3)
-<p align="center">When a 500 occurs, Serilog is used to log the error with it's error guid to provide an easy method of troubleshooting.</p>
+<p align="center">When a 500 occurs, Serilog is used to log the error with it's error guid to provide an easy method of locating stacktrace.</p>
 
 ## Documentation
 ### Database Diagram:
