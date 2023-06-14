@@ -10,6 +10,8 @@ This is a communication tool that allows users to connect and chat with one anot
     - [Partial Username Search and Messaging](#partial-username-search-and-messaging)
     - [AI Message Suggestions](#ai-message-suggestions)
     - [Error Handling](#error-handling)
+- [Documentation](#documentation)
+- [Future Improvements](#future-improvements)
 
 ## Setup
 1. Clone project
@@ -30,8 +32,7 @@ This is a communication tool that allows users to connect and chat with one anot
 
 ### AI Message Suggestions
 ![msedge_lCdH7XNcTA](https://github.com/giannimperez/MessagingApp/assets/36053371/866bc01b-f7d5-4485-83de-f9b5f0d453a4)
-<p align="center">Use the AI Message Suggestion button (powered by OpenAi) to create a message suggestion, which can be tweaked before sending.</p>
-<p align="center">Message suggestions are created with the context of previous messages in order to provide more useful suggestions.</p>
+<p align="center">Use the AI Message Suggestion button (powered by OpenAI) to create a message suggestion, which can be tweaked before sending. Message suggestions are created with the context of previous messages in order to provide more useful suggestions.</p>
 
 ### Error Handling
 #### Toast for 400 responses:
