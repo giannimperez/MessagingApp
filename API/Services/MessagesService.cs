@@ -119,8 +119,17 @@ namespace API.Services
             // send messages to OpenAiAPI
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("authorization", "Bearer " + _openAiApiKey);
-            var content = new StringContent("{\"model\": \"text-davinci-001\", \"prompt\":\"" + prompt + "\",\"temperature\": 1,\"max_tokens\": 100}",
-                Encoding.UTF8, "application/json");
+
+            var promptObject = new
+            {
+                model = "text-davinci-001",
+                prompt,
+                temperature = 1,
+                max_tokens = 100
+            };
+
+            var jsonContent = System.Text.Json.JsonSerializer.Serialize(promptObject); // escapes all special characters that would affect json
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("https://api.openai.com/v1/completions", content);
 
             if (!response.IsSuccessStatusCode)
