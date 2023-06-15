@@ -63,5 +63,8 @@ This is a communication tool that allows users to connect and chat with one anot
 
 * Implement a mechanism that limits OpenAI API requests to avoid extremely high charges.
 
+* Improve OpenAI integration.
+    * Escape characters for requests.
+
 ## Credits
 Developed by Gianni Perez
