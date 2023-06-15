@@ -58,6 +58,9 @@ This is a communication tool that allows users to connect and chat with one anot
 * Track issued tokens with MongoDB.
     *  Would allow us to invalidate tokens when deleting a user.
 
+* Implement User roles (i.e. Admin)
+    * Would replace current UserName based implementation.
+
 * Implement a mechanism that limits OpenAI API requests to avoid extremely high charges.
 
 ## Credits
